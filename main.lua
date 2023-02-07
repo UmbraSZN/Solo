@@ -1,4 +1,5 @@
 function love.load()
+    love.graphics.setBackgroundColor(22/255, 22/255, 22/255)
     require("src/startup/gameStart")
     startGame()
 end
