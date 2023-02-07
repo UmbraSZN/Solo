@@ -1,5 +1,5 @@
 player = world:newCircleCollider(50, 50, 20)
-player.speed = 100000
+player.speed = 80
 
 function player:update(dt)
 
