@@ -7,11 +7,12 @@ function enemies:spawn(x, y, type) --spawn a new enemy
         enemy = world:newCircleCollider(x, y, 20)
         
     elseif type == "" then
-        enemy = world:newCircleCollider(x, y, 20)
+        --code for different mob type
 
     end
 
     enemy:setCollisionClass("Enemy")
+    table.insert(enemies, enemy)
 end
 
 
