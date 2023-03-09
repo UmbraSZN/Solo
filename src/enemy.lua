@@ -21,18 +21,22 @@ function enemies:spawn(x, y, type) --spawn a new enemy
         local dx, dy = playerX - enemyX, playerY - enemyY
         local length = math.sqrt(dx^2 + dy^2)
 
-        if length < 200 then --within detection range
+        if length < 200 and length >= 50 then --within detection range
             --move to player
             --add code to consider colliders
             local vx, vy = dx/length, dy/length 
             self:setLinearVelocity(vx * self.speed, vy * self.speed)
 
-        else
+        elseif length >= 200 then 
             --return to spawn
             local xToSpawn, yToSpawn = self.spawnX - enemyX, self.spawnY - enemyY
             local lengthToSpawn = math.sqrt(xToSpawn^2 + yToSpawn^2)
             local dx, dy = xToSpawn/lengthToSpawn, yToSpawn/lengthToSpawn
             self:setLinearVelocity(dx * self.speed, dy * self.speed)
+
+        elseif length < 50 then
+            --enter combat mode
+            self:setLinearVelocity(0,0)
         end
 
     end
