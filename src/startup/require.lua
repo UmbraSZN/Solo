@@ -4,6 +4,6 @@ function requireAll()
 
     require("src/player")
     require("src/camera")
-    requrie("src/enemy")
+    require("src/enemy")
 end
 

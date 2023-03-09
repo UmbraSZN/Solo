@@ -10,6 +10,7 @@ end
 
 function love.update(dt)
     player:update(dt)
+    enemies:update(dt)
     world:update(dt)
     cam:update(dt)
 end
@@ -21,3 +22,10 @@ function love.draw()
 end
 
 
+function love.keypressed(key)
+     
+    if key == "o" then 
+        local testEnemy = enemies:spawn(120, 40, "test")
+    end
+
+end
