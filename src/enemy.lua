@@ -6,6 +6,8 @@ function enemies:spawn(x, y, type) --spawn a new enemy
     if type == "test" then
         enemy = world:newCircleCollider(x, y, 20)
         enemy.speed = 50
+        enemy.spawnX = x 
+        enemy.spawnY = y 
         
     elseif type == "" then
         --code for different mob type
@@ -18,15 +20,19 @@ function enemies:spawn(x, y, type) --spawn a new enemy
 
         local dx, dy = playerX - enemyX, playerY - enemyY
         local length = math.sqrt(dx^2 + dy^2)
-        local vx, vy = dx/length, dy/length
 
         if length < 200 then --within detection range
-            --consider colliders
+            --move to player
+            --add code to consider colliders
+            local vx, vy = dx/length, dy/length 
             self:setLinearVelocity(vx * self.speed, vy * self.speed)
 
         else
-            --wander
-            self:setLinearVelocity(0, 0)
+            --return to spawn
+            local xToSpawn, yToSpawn = self.spawnX - enemyX, self.spawnY - enemyY
+            local lengthToSpawn = math.sqrt(xToSpawn^2 + yToSpawn^2)
+            local dx, dy = xToSpawn/lengthToSpawn, yToSpawn/lengthToSpawn
+            self:setLinearVelocity(dx * self.speed, dy * self.speed)
         end
 
     end
@@ -41,7 +47,8 @@ function enemies:update(dt)
     for _, e in ipairs(enemies) do
         
         e:move()
-        
+
     end
 
 end
+
