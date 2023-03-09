@@ -34,9 +34,22 @@ function enemies:spawn(x, y, type) --spawn a new enemy
             local dx, dy = xToSpawn/lengthToSpawn, yToSpawn/lengthToSpawn
             self:setLinearVelocity(dx * self.speed, dy * self.speed)
 
-        elseif length < 50 then
+        elseif length < 50 then --make value larger?
             --enter combat mode
             self:setLinearVelocity(0,0)
+            self:combat(dx, dy, length)
+        end
+
+    end
+
+    function enemy:combat(dx, dy, length)
+        
+        local vx, vy = dx/length, dy/length
+        local query = world:queryCircleArea(self:getX() + vx * 40, self:getY() + vy * 40, 35, {"Player"})
+
+        --add a delay/cooldown on attacking
+        for _, plr in ipairs(query) do
+            plr.health = plr.health - 10 --change damage value based on a variable later
         end
 
     end
@@ -56,3 +69,5 @@ function enemies:update(dt)
 
 end
 
+--local query = world:queryRectangleArea(self:getX() + vx * 20, self:getY() + vy * 20, 40, 100, {"Player"}) 
+--rectangles may be better to use when attacking as they give better htiboxes however there was an issue with them interacting with circles
