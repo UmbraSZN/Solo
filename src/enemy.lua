@@ -6,6 +6,7 @@ function enemies:spawn(x, y, type) --spawn a new enemy
     if type == "test" then
         enemy = world:newCircleCollider(x, y, 20)
         enemy.speed = 50
+        enemy.health = 100
         enemy.spawnX = x 
         enemy.spawnY = y 
         
@@ -49,6 +50,8 @@ function enemies:spawn(x, y, type) --spawn a new enemy
 
         --add a delay/cooldown on attacking
         for _, plr in ipairs(query) do
+            --check for block
+            --check if player can be damaged
             plr.health = plr.health - 10 --change damage value based on a variable later
         end
 
