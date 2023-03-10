@@ -3,13 +3,18 @@ player:setCollisionClass("Player")
 player.speed = 80
 player.health = 100
 player.state = "default"
-player.cd = 0
-player.lightAttackCd = 0.2
+player.iFrames = 0
+player.animTimer = 0
+player.lightAttackDuration = 0.2
 player.lightStun = 0.2
+player.dashDuration = 0.4
+player.dashCd = 2.5
+player.dashTimer = 0
 
 function player:update(dt)
 
-    if player.state ~= "stunned" then
+    if player.state ~= "stunned" and player.state ~= "dashing" then
+        player:setLinearDamping(0)
 
         --moving player(w, a, s, d)
         local vx, vy = 0, 0 --vectors
@@ -36,22 +41,35 @@ function player:update(dt)
 
         player:setLinearVelocity(vx, vy)
 
-    else
+        if player.dashTimer > 0 then
+            player.dashTimer = player.dashTimer - dt
+            if player.dashTimer < 0 then
+                player.dashTimer = 0
+            end
+        end
+
+    elseif player.state == "stunned" then
 
         player:setLinearVelocity(0, 0)
         --add timer?
         player.state = "default"
+        
     end
 
 
-    if player.cd > 0 then 
-        player.cd = player.cd - dt
-        if player.cd < 0 then
-            player.cd = 0
+    if player.animTimer > 0 then 
+        player.animTimer = player.animTimer - dt
+        if player.animTimer < 0 then
+            player.animTimer = 0
             player.state = "default"
         end
     end
 
-
+    if player.iFrames > 0 then
+        player.iFrames = player.iFrames - dt
+        if player.iFrames < 0 then
+            player.iFrames = 0
+        end
+    end
 end
 

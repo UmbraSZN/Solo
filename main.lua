@@ -30,12 +30,50 @@ function love.keypressed(key)
      
     if key == "o" then 
         local testEnemy = enemies:spawn(120, 40, "test")
-    end
 
-    if key == "l" then
+    elseif key == "l" then
         local testDummy = world:newCircleCollider(0, 0, 20)
         testDummy.health = 100
         testDummy:setCollisionClass("Enemy")
+
+    elseif key == "q" and player.state == "default" and player.dashTimer == 0 then --dodge/dash
+        --give iframes
+        player.state = "dashing"
+        player.iFrames = player.dashDuration
+        player.animTimer = player.dashDuration
+        player.dashTimer = player.dashCd
+
+        local vx, vy = 0, 0 --vectors 
+        if love.keyboard.isDown("a") then
+            print("x")
+            vx = -1
+        end
+
+        if love.keyboard.isDown("d") then
+            vx = 1
+        end
+
+        if love.keyboard.isDown("s") then
+            vy = 1
+        end
+
+        if love.keyboard.isDown("w") then
+            vy = -1
+        end
+
+        if vx ~= 0 and vy ~= 0 then
+            vx = vx/math.sqrt(2)
+            vy = vy/math.sqrt(2)
+        end
+
+        if vx == 0 and vy == 0 then
+            --perform spot-dodge
+            --longer dodge frames?
+        end
+
+        player:setLinearDamping(0.5)
+        player:setLinearVelocity(vx * 200, vy * 200)
+        
     end
 
 end
@@ -52,7 +90,7 @@ function love.mousepressed(x, y, button)
         if player.state == "default" then --player is in normal gameplay
             
             player.state = "attacking"
-            player.cd = player.lightAttackCd
+            player.animTimer = player.lightAttackDuration
             
 
             local px, py = player:getPosition()
