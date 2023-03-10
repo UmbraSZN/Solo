@@ -9,6 +9,8 @@ function enemies:spawn(x, y, type) --spawn a new enemy
         enemy.health = 100
         enemy.spawnX = x 
         enemy.spawnY = y 
+        enemy.state = "default"
+        enemy.stunTimer = 0
         
     elseif type == "" then
         --code for different mob type
@@ -65,12 +67,22 @@ end
 function enemies:update(dt)
 
     for _, e in ipairs(enemies) do
-        
-        e:move()
+        if e.state == "default" then
+            e:move()
+
+        elseif e.state == "stunned" then
+
+            e.stunTimer = e.stunTimer - dt
+            if e.stunTimer < 0 then
+                e.stunTimer = 0
+                e.state = "default"
+            end
+
+        end
 
     end
 
 end
 
 --local query = world:queryRectangleArea(self:getX() + vx * 20, self:getY() + vy * 20, 40, 100, {"Player"}) 
---rectangles may be better to use when attacking as they give better htiboxes however there was an issue with them interacting with circles
+--rectangles may be better to use when attacking as they give better htiboxes however there was an issue with them interacting with circles 
