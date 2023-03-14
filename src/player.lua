@@ -8,6 +8,10 @@ player.animTimer = 0
 player.stunTimer = 0
 player.lightAttackDuration = 0.2
 player.lightStun = 0.1
+player.heavyAttackDuration = 0.35
+player.heavyStun = 0.15
+player.heavyCd = 4
+player.heavyTimer = 0
 player.dashDuration = 0.4
 player.dashCd = 2.5
 player.dashTimer = 0
@@ -75,6 +79,14 @@ function player:update(dt)
             player.iFrames = 0
         end
     end
+
+    if player.heavyTimer > 0 then
+        player.heavyTimer = player.heavyTimer - dt
+        if player.heavyTimer <= 0 then
+            player.heavyTimer = 0
+        end
+    end
+
 end
 
 function player:dodge()
@@ -115,7 +127,9 @@ function player:dodge()
     player:setLinearVelocity(vx * 200, vy * 200)
 end
 
+
 function player:lightAttack(cx, cy)
+
     player.state = "attacking"
     player.animTimer = player.lightAttackDuration
     
@@ -137,7 +151,7 @@ function player:lightAttack(cx, cy)
         e:setLinearVelocity(vx * 50, vy * 50)
         
 
-        
+        --move to enemy module?
         if e.health <= 0 then
             for i, v in ipairs(enemies) do
                 if e == v then
@@ -151,3 +165,43 @@ function player:lightAttack(cx, cy)
 
     end
 end
+
+
+function player:heavyAttack()
+    player.state = "attacking"
+    player.animTimer = player.heavyAttackDuration
+    player.heavyTimer = player.heavyCd
+    
+    local cx, cy = cam:mousePosition()
+    local px, py = player:getPosition()
+    local dx, dy = cx - px, cy - py
+    local length = math.sqrt(dx^2 + dy^2)
+    local vx, vy = dx/length, dy/length
+
+    local query = world:queryCircleArea(px + vx * 50, py + vy * 50, 45, {"Enemy"})
+
+    for _, e in ipairs(query) do
+        e.health = e.health - 15 --change damage value based on a variable later
+        e.state = "stunned"
+        e.stunTimer = player.heavyStun
+
+        --knockback
+        e:setLinearVelocity(vx * 80, vy * 80)
+        
+
+        --move to enemy module?
+        if e.health <= 0 then
+            for i, v in ipairs(enemies) do
+                if e == v then
+                    table.remove(enemies, i)
+                end
+            end
+            e:destroy()
+            --drop items
+            --give exp
+        end
+
+    end
+end
+
+--make attacks happen at the end of the wind up timer so there is a time frame where you can react to an attack to parry.

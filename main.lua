@@ -39,6 +39,9 @@ function love.keypressed(key)
     elseif key == "q" and player.state == "default" and player.dashTimer == 0 then --dodge/dash
         player:dodge()
 
+    elseif key == "r" and player.state == "default" and player.heavyTimer == 0 then --heavy attack
+        player:heavyAttack()
+
     elseif key == "p" then
         print("X: ", player:getX())
         print("Y: ", player:getY())
