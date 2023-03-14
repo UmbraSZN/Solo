@@ -5,8 +5,9 @@ player.health = 100
 player.state = "default"
 player.iFrames = 0
 player.animTimer = 0
+player.stunTimer = 0
 player.lightAttackDuration = 0.2
-player.lightStun = 0.2
+player.lightStun = 0.1
 player.dashDuration = 0.4
 player.dashCd = 2.5
 player.dashTimer = 0
@@ -51,15 +52,19 @@ function player:update(dt)
     elseif player.state == "stunned" then
 
         player:setLinearVelocity(0, 0)
-        --add timer?
-        player.state = "default"
-        
+        if player.stunTimer > 0 then
+            player.stunTimer = player.stunTimer - dt
+            if player.stunTimer <= 0 then
+                player.stunTimer = 0
+                player.state = "default"
+            end
+        end 
     end
 
 
     if player.animTimer > 0 then 
         player.animTimer = player.animTimer - dt
-        if player.animTimer < 0 then
+        if player.animTimer <= 0 then
             player.animTimer = 0
             player.state = "default"
         end

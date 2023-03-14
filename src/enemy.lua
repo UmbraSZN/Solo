@@ -11,6 +11,10 @@ function enemies:spawn(x, y, type) --spawn a new enemy
         enemy.spawnY = y 
         enemy.state = "default"
         enemy.stunTimer = 0
+        enemy.animTimer = 0
+        enemy.lightStun = 0.1
+        enemy.lightAttackDuration = 0.2
+        
         
     elseif type == "" then
         --code for different mob type
@@ -47,16 +51,26 @@ function enemies:spawn(x, y, type) --spawn a new enemy
 
     function enemy:combat(dx, dy, length)
         
-        local vx, vy = dx/length, dy/length
-        local query = world:queryCircleArea(self:getX() + vx * 40, self:getY() + vy * 40, 35, {"Player"})
+        if self.state == "default" then
 
-        --add a delay/cooldown on attacking
-        for _, plr in ipairs(query) do
-            --check for block
-            --check if player can be damaged
-            plr.health = plr.health - 10 --change damage value based on a variable later
+            self.state = "attacking"
+            self.animTimer = self.lightAttackDuration
+            local vx, vy = dx/length, dy/length
+            local query = world:queryCircleArea(self:getX() + vx * 40, self:getY() + vy * 40, 35, {"Player"})
+            
+            --add a delay/cooldown on attacking
+            for _, plr in ipairs(query) do
+                --check for block
+                --check if player can be damaged
+                if plr.iFrames == 0 then --not invincible
+                    plr.state = "stunned"
+                    plr.health = plr.health - 10 --change damage value based on a variable later
+                    plr.stunTimer = self.lightStun
+                else
+                    --play atttack dodge sound
+                end
+            end
         end
-
     end
 
     enemy:setCollisionClass("Enemy")
@@ -71,13 +85,20 @@ function enemies:update(dt)
             e:move()
 
         elseif e.state == "stunned" then
-
             e.stunTimer = e.stunTimer - dt
             if e.stunTimer < 0 then
                 e.stunTimer = 0
                 e.state = "default"
             end
 
+        end
+        
+        if e.animTimer > 0 then
+            e.animTimer = e.animTimer - dt
+            if e.animTimer <= 0 then
+                e.animTimer = 0
+                e.state = "default"
+            end
         end
 
     end
