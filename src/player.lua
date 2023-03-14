@@ -1,4 +1,4 @@
-player = world:newCircleCollider(50, 50, 20)
+player = world:newCircleCollider(0, 0, 20)
 player:setCollisionClass("Player")
 player.speed = 80
 player.health = 100
@@ -51,7 +51,6 @@ function player:update(dt)
 
     elseif player.state == "stunned" then
 
-        player:setLinearVelocity(0, 0)
         if player.stunTimer > 0 then
             player.stunTimer = player.stunTimer - dt
             if player.stunTimer <= 0 then

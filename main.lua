@@ -73,6 +73,10 @@ function love.keypressed(key)
 
         player:setLinearDamping(0.5)
         player:setLinearVelocity(vx * 200, vy * 200)
+
+    elseif key == "p" then
+        print("X: ", player:getX())
+        print("Y: ", player:getY())
         
     end
 

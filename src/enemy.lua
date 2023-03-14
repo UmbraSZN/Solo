@@ -38,8 +38,14 @@ function enemies:spawn(x, y, type) --spawn a new enemy
             --return to spawn
             local xToSpawn, yToSpawn = self.spawnX - enemyX, self.spawnY - enemyY
             local lengthToSpawn = math.sqrt(xToSpawn^2 + yToSpawn^2)
-            local dx, dy = xToSpawn/lengthToSpawn, yToSpawn/lengthToSpawn
-            self:setLinearVelocity(dx * self.speed, dy * self.speed)
+            if lengthToSpawn <= 5 then
+                enemy:wander()
+            else
+                local dx, dy = xToSpawn/lengthToSpawn, yToSpawn/lengthToSpawn
+                self:setLinearVelocity(dx * self.speed, dy * self.speed)
+            end
+
+            
 
         elseif length < 50 then --make value larger?
             --enter combat mode
@@ -66,11 +72,18 @@ function enemies:spawn(x, y, type) --spawn a new enemy
                     plr.state = "stunned"
                     plr.health = plr.health - 10 --change damage value based on a variable later
                     plr.stunTimer = self.lightStun
+                    plr:setLinearVelocity(vx * 50, vy * 50)
                 else
+                    print("dodged")
                     --play atttack dodge sound
                 end
             end
         end
+    end
+
+    function enemy:wander()
+        self:setLinearVelocity(0,0)
+        --randomly move around near spawn point
     end
 
     enemy:setCollisionClass("Enemy")
@@ -81,6 +94,7 @@ end
 function enemies:update(dt)
 
     for _, e in ipairs(enemies) do
+
         if e.state == "default" then
             e:move()
 
