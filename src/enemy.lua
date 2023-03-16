@@ -101,6 +101,7 @@ function enemies:spawn(x, y, type) --spawn a new enemy
 
     function enemy:wander()
         self:setLinearVelocity(0,0)
+        --need to add code
         --randomly move around near spawn point
     end
 
