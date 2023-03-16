@@ -69,10 +69,28 @@ function enemies:spawn(x, y, type) --spawn a new enemy
                 --check for block
                 --check if player can be damaged
                 if plr.iFrames == 0 then --not invincible
-                    plr.state = "stunned"
-                    plr.health = plr.health - 10 --change damage value based on a variable later
-                    plr.stunTimer = self.lightStun
-                    plr:setLinearVelocity(vx * 50, vy * 50)
+
+                    if plr.blockDuration == 0 then
+                        plr.health = plr.health - 10 --change damage value based on a variable later
+                        plr.stunTimer = self.lightStun
+                        plr.state = "stunned"
+                        plr:setLinearVelocity(vx * 50, vy * 50)
+                    
+                    elseif plr.blockDuration < 0.5 then
+                        --parry
+                        print("parried")
+                        self.stunTimer = plr.parryStun
+                        self.state = "stunned"
+
+                    else
+                        --block
+                        print("blocked")
+                        plr.health = plr.health - 10 * 0.5 --change damage value based on a variable later
+                        plr.stunTimer = self.lightStun
+                        plr.state = "stunned"
+                        plr:setLinearVelocity(vx * 50, vy * 50) --reduce knockback?
+                    end
+
                 else
                     print("dodged")
                     --play atttack dodge sound

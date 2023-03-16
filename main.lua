@@ -23,6 +23,8 @@ function love.draw()
         local cx, cy = cam:mousePosition()
         love.graphics.circle("fill", cx, cy, 1)
     cam:detach()
+
+    love.graphics.print("Health: ".. player.health, 10, 10)
 end
 
 
@@ -42,10 +44,23 @@ function love.keypressed(key)
     elseif key == "r" and player.state == "default" and player.heavyTimer == 0 then --heavy attack
         player:heavyAttack()
 
-    elseif key == "p" then
+    elseif key == "f" and player.state == "default" and player.blockTimer == 0 then --block/parry
+        player.state = "blocking"
+        
+    elseif key == "p" then --debugging
         print("X: ", player:getX())
         print("Y: ", player:getY())
         
+    end
+
+end
+
+function love.keyreleased(key)
+
+    if key == "f" and player.state == "blocking" then
+        player.state = "default"
+        player.blockDuration = 0
+        player.blockTimer = player.blockCd
     end
 
 end

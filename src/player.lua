@@ -15,11 +15,20 @@ player.heavyTimer = 0
 player.dashDuration = 0.4
 player.dashCd = 2.5
 player.dashTimer = 0
+player.blockTimer = 0
+player.blockCd = 2
+player.blockDuration = 0
+player.parryStun = 0.1
+
 
 function player:update(dt)
 
     if player.state ~= "stunned" and player.state ~= "dashing" then
         player:setLinearDamping(0)
+
+        if love.keyboard.isDown("f") and player.state == "blocking" then
+            player.blockDuration = player.blockDuration + dt
+        end
 
         --moving player(w, a, s, d)
         local vx, vy = 0, 0 --vectors
@@ -77,6 +86,13 @@ function player:update(dt)
         player.iFrames = player.iFrames - dt
         if player.iFrames < 0 then
             player.iFrames = 0
+        end
+    end
+
+    if player.blockTimer > 0 then
+        player.blockTimer = player.blockTimer - dt
+        if player.blockTimer <= 0 then
+            player.blockTimer = 0
         end
     end
 
