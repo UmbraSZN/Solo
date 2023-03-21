@@ -1,10 +1,12 @@
 effects = {}
 
-function effects:spawn(x, y, type)
+function effects:spawn(x, y, type, rot, scale)
     
     local effect = {}
     effect.x = x 
     effect.y = y
+    effect.rot = rot or 0
+    effect.scale = scale or 1
     effect.dead = false
     effect.type = type
 
@@ -43,7 +45,7 @@ function effects:draw()
 
     for _, e in ipairs(effects) do
         if e.anim then
-            e.anim:draw(e.spriteSheet, e.x, e.y, 0, 1, 1, e.width/2, e.height/2)
+            e.anim:draw(e.spriteSheet, e.x, e.y, e.rot, e.scale, e.scale, e.width/2, e.height/2)
         end
     end
 end

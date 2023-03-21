@@ -75,7 +75,6 @@ function love.mousepressed(x, y, button)
         --check if clicking a button
 
         if player.state == "default" then --player is in normal gameplay
-            effects:spawn(player:getX(), player:getY(), "swordSwipe")
             player:lightAttack(cx, cy)
 
         end

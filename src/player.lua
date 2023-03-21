@@ -155,6 +155,8 @@ function player:lightAttack(cx, cy)
     local length = math.sqrt(dx^2 + dy^2)
     local vx, vy = dx/length, dy/length
 
+    local rot = math.atan2(vy, vx)
+    effects:spawn(px + vx * 40, py + vy * 40, "swordSwipe", rot - math.pi/4)--, rot+math.pi) --add rotation
     local query = world:queryCircleArea(px + vx * 40, py + vy * 40, 35, {"Enemy"})
 
     for _, e in ipairs(query) do
