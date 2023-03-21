@@ -20,6 +20,13 @@ player.blockCd = 2
 player.blockDuration = 0
 player.parryStun = 0.1
 
+--click lmb
+--enter attacking state
+--spawn sword
+--wait 0.2 ish seconds
+--swing 
+--damage enemies in query
+
 
 function player:update(dt)
 
@@ -71,6 +78,7 @@ function player:update(dt)
                 player.state = "default"
             end
         end 
+
     end
 
 
@@ -103,6 +111,26 @@ function player:update(dt)
         end
     end
 
+
+end
+
+function player:draw() 
+
+    --add an indication if hit
+
+    if player.state == "attacking" then
+        --swSpr, px+swX, py+swY, swordRot, nil, nil, swSpr:getWidth()/2, swSpr:getHeight()/2
+        local px, py = player:getPosition()
+        local cx, cy = cam:mousePosition()
+        local dx, dy = cx - px, cy - py
+        local length = math.sqrt(dx^2 + dy^2)
+        local vx, vy = dx/length, dy/length
+    
+        local rot = math.atan2(vy, vx)
+
+        local swordSprite = love.graphics.newImage(sprites.sword)
+        love.graphics.draw(swordSprite, px + vx * 20, py + vy * 20, rot + math.pi/4, nil, nil, swordSprite:getWidth()/2, swordSprite:getHeight()/2)
+    end
 end
 
 function player:dodge()
@@ -144,6 +172,7 @@ function player:dodge()
 end
 
 
+
 function player:lightAttack(cx, cy)
 
     player.state = "attacking"
@@ -156,7 +185,8 @@ function player:lightAttack(cx, cy)
     local vx, vy = dx/length, dy/length
 
     local rot = math.atan2(vy, vx)
-    effects:spawn(px + vx * 40, py + vy * 40, "swordSwipe", rot - math.pi/4)--, rot+math.pi) --add rotation
+    --effects:spawn(px + vx * 20, py + vy * 20, "sword", rot + math.pi/4)
+    effects:spawn(px + vx * 40, py + vy * 40, "swordSwipe", rot - math.pi/4)
     local query = world:queryCircleArea(px + vx * 40, py + vy * 40, 35, {"Enemy"})
 
     for _, e in ipairs(query) do

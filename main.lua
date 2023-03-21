@@ -24,6 +24,7 @@ function love.draw()
         local cx, cy = cam:mousePosition()
         love.graphics.circle("fill", cx, cy, 1)
         effects:draw()
+        player:draw()
     cam:detach()
     love.graphics.print("Health: ".. player.health, 10, 10)
 end
