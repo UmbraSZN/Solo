@@ -14,6 +14,7 @@ function love.update(dt)
     player:update(dt)
     enemies:update(dt)
     world:update(dt)
+    effects:update(dt)
     cam:update(dt)
 end
 
@@ -22,8 +23,8 @@ function love.draw()
         world:draw()
         local cx, cy = cam:mousePosition()
         love.graphics.circle("fill", cx, cy, 1)
+        effects:draw()
     cam:detach()
-
     love.graphics.print("Health: ".. player.health, 10, 10)
 end
 
@@ -74,6 +75,7 @@ function love.mousepressed(x, y, button)
         --check if clicking a button
 
         if player.state == "default" then --player is in normal gameplay
+            effects:spawn(player:getX(), player:getY(), "swordSwipe")
             player:lightAttack(cx, cy)
 
         end
