@@ -1,4 +1,5 @@
 function requireAll()
+    require("src/startup/resources")
     require("src/startup/colliders")
     createCollisionClasses()
 
@@ -7,5 +8,6 @@ function requireAll()
     require("src/enemy")
     require("src/effects")
     require("src/effects")
+    require("src/startup/resources")
 end
 

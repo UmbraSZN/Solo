@@ -11,14 +11,18 @@ function effects:spawn(x, y, type, rot, scale)
     effect.type = type
 
     if type == "swordSwipe" then
-        effect.spriteSheet = love.graphics.newImage("assets/sprites/blueSlashSpriteSheet.png")
+        effect.spriteSheet = love.graphics.newImage(sprites.swordSwipe)
         effect.width = 124
         effect.height = 150
         local g = anim8.newGrid(124, 150, effect.spriteSheet:getWidth(), effect.spriteSheet:getHeight())
         effect.anim = anim8.newAnimation(g("1-5", 1), 0.05, function() effect.dead = true end)
 
-    elseif type == "" then
-
+    elseif type == "sword" then --maybe remove?
+        effect.spriteSheet = love.graphics.newImage(sprites.sword)
+        effect.width = effect.spriteSheet:getWidth()
+        effect.height = effect.spriteSheet:getHeight()
+        local g = anim8.newGrid(effect.width, effect.height, effect.width, effect.height)
+        effect.anim = anim8.newAnimation(g("1-1", 1), 0.2, function() effect.dead = true end)
     end
 
     
