@@ -24,7 +24,7 @@ function love.draw()
         local cx, cy = cam:mousePosition()
         love.graphics.circle("fill", cx, cy, 1)
         effects:draw()
-        player:draw()
+        --player:draw()
     cam:detach()
     love.graphics.print("Health: ".. player.health, 10, 10)
 end
@@ -76,7 +76,8 @@ function love.mousepressed(x, y, button)
         --check if clicking a button
 
         if player.state == "default" then --player is in normal gameplay
-            player:lightAttack(cx, cy)
+            --player:lightAttack(cx, cy)
+            player:attack("light")
 
         end
 

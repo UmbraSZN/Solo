@@ -22,7 +22,7 @@ function effects:spawn(x, y, type, rot, scale)
         effect.width = effect.spriteSheet:getWidth()
         effect.height = effect.spriteSheet:getHeight()
         local g = anim8.newGrid(effect.width, effect.height, effect.width, effect.height)
-        effect.anim = anim8.newAnimation(g("1-1", 1), 0.2, function() effect.dead = true end)
+        effect.anim = anim8.newAnimation(g("1-1", 1), 0.01, function() effect.dead = true end)
     end
 
     

@@ -6,7 +6,8 @@ player.state = "default"
 player.iFrames = 0
 player.animTimer = 0
 player.stunTimer = 0
-player.lightAttackDuration = 0.2
+player.attackTimer = 0
+player.lightAttackDuration = 0.2 --dont need anymore?
 player.lightStun = 0.1
 player.heavyAttackDuration = 0.35
 player.heavyStun = 0.15
@@ -81,6 +82,62 @@ function player:update(dt)
 
     end
 
+    if player.state == "attacking" then
+
+        player.attackTimer = player.attackTimer + dt
+
+
+        local px, py = player:getPosition()
+        local cx, cy = cam:mousePosition()
+        local dx, dy = cx - px, cy - py
+        local length = math.sqrt(dx^2 + dy^2)
+        local vx, vy = dx/length, dy/length
+
+        local rot = math.atan2(vy, vx)
+
+        if player.attackTimer >= player.animTimer then
+
+            --attack
+            player.state = "default"
+            player.attackTimer = 0
+            
+            effects:spawn(px + vx * 40, py + vy * 40, "swordSwipe", rot - math.pi/4)
+            local query = world:queryCircleArea(px + vx * 40, py + vy * 40, 35, {"Enemy"})
+        
+            for _, e in ipairs(query) do
+                --check for block
+                e.health = e.health - 10 --change damage value based on a variable later
+                e.state = "stunned"
+                e.stunTimer = player.lightStun
+        
+                --knockback
+                e:setLinearVelocity(vx * 50, vy * 50)
+                
+        
+                --move to enemy module?
+                if e.health <= 0 then
+                    for i, v in ipairs(enemies) do
+                        if e == v then
+                            table.remove(enemies, i)
+                        end
+                    end
+                    e:destroy()
+                    --drop items
+                    --give exp
+                end
+        
+            end
+
+        else
+
+            --draw sword
+
+            effects:spawn(px, py, "sword", rot + math.pi/4)
+
+        end
+
+    end
+
 
     if player.animTimer > 0 then 
         player.animTimer = player.animTimer - dt
@@ -114,24 +171,24 @@ function player:update(dt)
 
 end
 
-function player:draw() 
+-- function player:draw() 
 
-    --add an indication if hit
+--     --add an indication if hit
 
-    if player.state == "attacking" then
-        --swSpr, px+swX, py+swY, swordRot, nil, nil, swSpr:getWidth()/2, swSpr:getHeight()/2
-        local px, py = player:getPosition()
-        local cx, cy = cam:mousePosition()
-        local dx, dy = cx - px, cy - py
-        local length = math.sqrt(dx^2 + dy^2)
-        local vx, vy = dx/length, dy/length
+--     if player.state == "attacking" then
+--         --swSpr, px+swX, py+swY, swordRot, nil, nil, swSpr:getWidth()/2, swSpr:getHeight()/2
+--         local px, py = player:getPosition()
+--         local cx, cy = cam:mousePosition()
+--         local dx, dy = cx - px, cy - py
+--         local length = math.sqrt(dx^2 + dy^2)
+--         local vx, vy = dx/length, dy/length
     
-        local rot = math.atan2(vy, vx)
+--         local rot = math.atan2(vy, vx)
 
-        local swordSprite = love.graphics.newImage(sprites.sword)
-        love.graphics.draw(swordSprite, px + vx * 20, py + vy * 20, rot + math.pi/4, nil, nil, swordSprite:getWidth()/2, swordSprite:getHeight()/2)
-    end
-end
+--         local swordSprite = love.graphics.newImage(sprites.sword)
+--         love.graphics.draw(swordSprite, px + vx * 20, py + vy * 20, rot + math.pi/4, nil, nil, swordSprite:getWidth()/2, swordSprite:getHeight()/2)
+--     end
+-- end
 
 function player:dodge()
     player.state = "dashing"
@@ -141,7 +198,6 @@ function player:dodge()
 
     local vx, vy = 0, 0 --vectors 
     if love.keyboard.isDown("a") then
-        print("x")
         vx = -1
     end
 
@@ -171,8 +227,24 @@ function player:dodge()
     player:setLinearVelocity(vx * 200, vy * 200)
 end
 
+function player:attack(type)
+    
+    player.state = "attacking"
+
+    if type == "light" then
+        --set light values
+        player.animTimer = 0.45 --windup
+
+    elseif type == "heavy" then
+        --set heavy values
+        player.animTimer = 0.8
+    end
+
+    
+end
 
 
+--[[
 function player:lightAttack(cx, cy)
 
     player.state = "attacking"
@@ -213,6 +285,7 @@ function player:lightAttack(cx, cy)
 
     end
 end
+]]
 
 
 function player:heavyAttack()
