@@ -6,6 +6,7 @@ function startGame()
     local wf = require("libraries/windfield")
     world = wf.newWorld(0, 0, false) --create world
     anim8 = require("libraries/anim8")
+    gamestate = require("libraries/hump/gamestate")
 
 
     require("src/startup/require")
