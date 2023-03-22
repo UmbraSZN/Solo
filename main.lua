@@ -32,10 +32,10 @@ end
 
 function love.keypressed(key)
      
-    if key == "o" then 
+    if key == "o" then --debugging
         local testEnemy = enemies:spawn(120, 40, "test")
 
-    elseif key == "l" then
+    elseif key == "l" then --debugging
         local testDummy = world:newCircleCollider(0, 0, 20)
         testDummy.health = 100
         testDummy:setCollisionClass("Enemy")
@@ -53,6 +53,9 @@ function love.keypressed(key)
     elseif key == "p" then --debugging
         print("X: ", player:getX())
         print("Y: ", player:getY())
+
+    elseif key == "i" then --debugging
+        --spawn gate
         
     end
 

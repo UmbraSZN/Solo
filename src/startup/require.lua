@@ -7,7 +7,7 @@ function requireAll()
     require("src/camera")
     require("src/enemy")
     require("src/effects")
-    require("src/effects")
+    require("src/gates")
     require("src/startup/resources")
 end
 
