@@ -9,5 +9,6 @@ function requireAll()
     require("src/effects")
     require("src/gates")
     require("src/startup/resources")
+    require("src/menu")
 end
 
