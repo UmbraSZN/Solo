@@ -13,6 +13,7 @@ end
 function love.update(dt)
     player:update(dt)
     enemies:update(dt)
+    gates:update(dt)
     world:update(dt)
     effects:update(dt)
     cam:update(dt)

@@ -1,12 +1,13 @@
 effects = {}
 
-function effects:spawn(x, y, type, rot, scale)
+function effects:spawn(x, y, type, rot, scale, lifetime)
     
     local effect = {}
     effect.x = x 
     effect.y = y
     effect.rot = rot or 0
     effect.scale = scale or 1
+    effect.lifetime = lifetime or nil
     effect.dead = false
     effect.type = type
 
@@ -25,7 +26,21 @@ function effects:spawn(x, y, type, rot, scale)
         effect.anim = anim8.newAnimation(g("1-1", 1), 0.01, function() effect.dead = true end)
 
     elseif type == "gate" then
-        --add gate
+        effect.spriteSheet = love.graphics.newImage(sprites.gate)
+        effect.width = 300
+        effect.height = 300
+        local g = anim8.newGrid(300, 300, effect.spriteSheet:getWidth(), effect.spriteSheet:getHeight())
+        effect.anim = anim8.newAnimation(g("1-16", 1), 0.1)
+
+        function effect:update(dt)
+            if self.lifetime then
+                self.lifetime = self.lifetime - dt
+                if self.lifetime <= 0 then 
+                    self.dead = true
+                end
+            end
+        end
+
     end
 
     
@@ -38,6 +53,10 @@ function effects:update(dt)
     for _, e in ipairs(effects) do
         if e.anim then
             e.anim:update(dt)
+        end
+
+        if e.update then
+            e:update(dt)
         end
     end
 
