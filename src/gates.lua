@@ -2,9 +2,10 @@ gates = {}
 
 function gates:spawn(x, y, level)
 
-    local gate
+    local r = love.math.random(10, 40) --randomised size
+    local gate = world:newCircleCollider(x, y, r) 
     if level == "E" then
-
+        
 
     elseif level == "D" then
 

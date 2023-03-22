@@ -56,7 +56,7 @@ function love.keypressed(key)
 
     elseif key == "i" then --debugging
         --spawn gate
-        
+        gates:spawn(50, 80, "E")
     end
 
 end
