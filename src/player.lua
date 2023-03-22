@@ -4,7 +4,7 @@ player.speed = 80
 player.health = 100
 player.state = "default"
 player.iFrames = 0
-player.animTimer = 0
+player.animTimer = 0 --change how this works
 player.stunTimer = 0
 player.attackTimer = 0
 player.lightAttackDuration = 0.2 --dont need anymore?
@@ -80,6 +80,15 @@ function player:update(dt)
             end
         end 
 
+    elseif player.state == "dashing" then
+
+        if player.animTimer > 0 then 
+            player.animTimer = player.animTimer - dt
+            if player.animTimer <= 0 then
+                player.animTimer = 0
+                player.state = "default"
+            end
+        end
     end
 
     if player.state == "attacking" then
@@ -100,6 +109,7 @@ function player:update(dt)
             --attack
             player.state = "default"
             player.attackTimer = 0
+            player.animTimer = 0
             
             effects:spawn(px + vx * 40, py + vy * 40, "swordSwipe", rot - math.pi/4)
             local query = world:queryCircleArea(px + vx * 40, py + vy * 40, 35, {"Enemy"})
@@ -138,7 +148,7 @@ function player:update(dt)
 
     end
 
-
+--[[
     if player.animTimer > 0 then 
         player.animTimer = player.animTimer - dt
         if player.animTimer <= 0 then
@@ -146,7 +156,7 @@ function player:update(dt)
             player.state = "default"
         end
     end
-
+]]
     if player.iFrames > 0 then
         player.iFrames = player.iFrames - dt
         if player.iFrames < 0 then
@@ -233,15 +243,17 @@ function player:attack(type)
 
     if type == "light" then
         --set light values
-        player.animTimer = 0.45 --windup
+        player.animTimer = 0.35 --windup
 
     elseif type == "heavy" then
         --set heavy values
-        player.animTimer = 0.8
+        player.animTimer = 0.55 --windup
     end
 
     
 end
+
+--add player slowdown when attacking?
 
 
 --[[
@@ -287,7 +299,7 @@ function player:lightAttack(cx, cy)
 end
 ]]
 
-
+--[[
 function player:heavyAttack()
     player.state = "attacking"
     player.animTimer = player.heavyAttackDuration
@@ -324,5 +336,5 @@ function player:heavyAttack()
 
     end
 end
-
+]]
 --make attacks happen at the end of the wind up timer so there is a time frame where you can react to an attack to parry.

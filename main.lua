@@ -44,7 +44,8 @@ function love.keypressed(key)
         player:dodge()
 
     elseif key == "r" and player.state == "default" and player.heavyTimer == 0 then --heavy attack
-        player:heavyAttack()
+        --player:heavyAttack()
+        player:attack("heavy")
 
     elseif key == "f" and player.state == "default" and player.blockTimer == 0 then --block/parry
         player.state = "blocking"
