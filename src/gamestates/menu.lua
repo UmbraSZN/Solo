@@ -12,7 +12,7 @@ function menu:mousepressed(x, y, button)
 
 end
 
-function menu:keypressed(key) --remove?
+function menu:keypressed(key)               --replace with buttons
     if key == "return" then
         gamestate.switch(game)
         print("Entering game")
@@ -22,3 +22,4 @@ end
 
 
 return menu
+
