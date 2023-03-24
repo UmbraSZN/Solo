@@ -72,6 +72,7 @@ function game:keypressed(key)
         end
 
     end
+
 end
 
 function game:keyreleased(key)
@@ -89,7 +90,7 @@ function game:mousepressed(x, y, button)
 
         --check if clicking a button?
 
-        if player.state == "default" then --player is in normal gameplay
+        if player.state == "default" and not gamepaused then --player is in normal gameplay
             player:attack("light")
 
         end
