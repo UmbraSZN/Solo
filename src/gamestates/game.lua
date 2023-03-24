@@ -1,6 +1,9 @@
 local game = {}
 
 function game:update(dt)
+    if gamepaused then
+        --update pause menu?
+    return end --leaves the function
     player:update(dt)
     enemies:update(dt)
     gates:update(dt)
@@ -10,6 +13,7 @@ function game:update(dt)
 end
 
 function game:draw()
+    --make blurry if game paused
     cam:attach()
         world:draw()
         local cx, cy = cam:mousePosition()
@@ -18,10 +22,16 @@ function game:draw()
         --player:draw()
     cam:detach()
     love.graphics.print("Health: ".. player.health, 10, 10)
+
+    if gamepaused then
+        local ww = love.graphics.getWidth()
+        local wh = love.graphics.getHeight()
+        love.graphics.printf("Paused", 0, wh/2 - 50, ww, "center")--make buttons
+    end
 end
 
 function game:enter()
-
+    gamepaused = false
 end
 
 function game:keypressed(key)
@@ -53,8 +63,13 @@ function game:keypressed(key)
         gates:spawn(50, 80, "E")
 
     elseif key == "escape" then
-        gamestate.switch(menu) --change
-        print("Paused")
+        --gamestate.switch(menu) --change
+        gamepaused = not gamepaused
+        if gamepaused then
+            print("Paused")
+        else 
+            print("Resumed")
+        end
 
     end
 end

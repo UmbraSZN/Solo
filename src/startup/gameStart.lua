@@ -1,5 +1,4 @@
 function startGame()
-    gamestates()
     love.graphics.setBackgroundColor(22/255, 22/255, 22/255)
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.graphics.setFont(love.graphics.newFont(20))
@@ -10,7 +9,7 @@ function startGame()
 
     require("src/startup/require")
     requireAll()
-
+    gamestates()
 end
 
 function gamestates()
@@ -19,6 +18,7 @@ function gamestates()
     menu = require("src/gamestates/menu")
     game = require("src/gamestates/game")
 
+    gamepaused = false
     gamestate.registerEvents()
     gamestate.switch(menu)
 end
