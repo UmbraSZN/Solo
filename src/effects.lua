@@ -60,7 +60,8 @@ function effects:update(dt)
         end
     end
 
-    for i, v in ipairs(effects) do
+
+    for i = #effects, 1, -1 do
         if effects[i].dead then
             table.remove(effects, i)
         end

@@ -37,8 +37,8 @@ function gates:spawn(x, y, level)
 
         if gate.timer <= 0 then
             --remove gate
-            for i, v in ipairs(gates) do
-                if self == v then
+            for i = #gates, 1, -1 do
+                if self == gates[i] then
                     table.remove(gates, i)
                 end
             end

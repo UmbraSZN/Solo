@@ -1,16 +1,7 @@
 local menu = {}
 
 function menu:enter()
-    buttons:new(
-    "Play",
-    50, 
-    50, 
-    200, 
-    100, 
-    function()
-        print("Entering game")
-        gamestate.switch(game)
-     end)
+    buttons:menu("main")
 end
 
 function menu:update(dt)
@@ -18,13 +9,13 @@ function menu:update(dt)
 end
 
 function menu:draw()
-    love.graphics.push("all")    
-    love.graphics.setColor(0, 0, 0) --black
     buttons:draw()
-    love.graphics.pop() 
 
     local cx, cy = love.mouse.getPosition()
+    love.graphics.push("all")
+    love.graphics.setColor(0, 1, 0)
     love.graphics.circle("fill", cx, cy, 1)
+    love.graphics.pop()
 end
 
 function menu:mousepressed(x, y, button)
@@ -34,7 +25,10 @@ function menu:mousepressed(x, y, button)
     end
 end
 
-
+function menu:resize(w, h)
+    buttons:destroyAll()
+    gamestate.switch(menu)
+end
 
 return menu
 

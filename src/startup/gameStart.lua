@@ -1,5 +1,5 @@
 function startGame()
-    love.graphics.setBackgroundColor(22/255, 22/255, 22/255)
+    love.graphics.setBackgroundColor(28/255, 28/255, 28/255) --dark grey (#1C1C1C)
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.graphics.setFont(love.graphics.newFont(20))
 

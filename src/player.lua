@@ -126,8 +126,9 @@ function player:update(dt)
         
                 --move to enemy module?
                 if e.health <= 0 then
-                    for i, v in ipairs(enemies) do
-                        if e == v then
+
+                    for i = #enemies, 1, -1 do
+                        if e == enemies[i] then
                             table.remove(enemies, i)
                         end
                     end
