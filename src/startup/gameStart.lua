@@ -23,7 +23,6 @@ function gamestates()
     slots = require("src/gamestates/slots")
     pause = require("src/gamestates/pause")
 
-    gamepaused = false
     gamestate.registerEvents()
     gamestate.switch(menu)
 end
