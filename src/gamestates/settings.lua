@@ -39,6 +39,12 @@ function settings:mousepressed(x, y, button)
     end
 end
 
+function settings:keypressed(key)
+    if key == "escape" then
+        gamestate.pop()
+    end
+end
+
 
 return settings
 

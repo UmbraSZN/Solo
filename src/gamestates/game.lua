@@ -1,32 +1,15 @@
 local game = {}
 
 
-function game:enter(previous)
-    -- if previous ~= game then
-    --     gamepaused = false
-    -- end
+function game:enter()
     buttons:destroyAll()
 end
 
-function game:resume() --may not need because leave is called with pop
-    --buttons:destroyAll()
-end
 
-function game:resize(w, h) --may not need
-    -- buttons:destroyAll()
-    -- if gamepaused then
-    --     buttons:menu("paused")
-    -- end
+function game:resize(w, h)
 end
 
 function game:update(dt)
-    -- if gamepaused then
-    --     if table.getn(buttons) == 0 then --doesn't add buttons every frame
-    --         buttons:menu("paused") 
-    --     else
-    --         buttons:update(dt)
-    --     end
-    -- return end --leaves the update function
     player:update(dt)
     enemies:update(dt)
     gates:update(dt)
@@ -36,9 +19,7 @@ function game:update(dt)
 end
 
 function game:draw()
-    -- if gamepaused then 
-    --     --blur background
-    -- end
+
     cam:attach()
         world:draw()
         local cx, cy = cam:mousePosition()
@@ -51,9 +32,6 @@ function game:draw()
     cam:detach()
     love.graphics.print("Health: ".. player.health, 10, 10)
 
-    -- if gamepaused then
-    --     buttons:draw()
-    -- end
 end
 
 
@@ -87,16 +65,9 @@ function game:keypressed(key)
         gates:spawn(50, 80, "E")
 
     elseif key == "escape" then
-        -- gamepaused = not gamepaused
-        -- if gamepaused then
-        --     print("Paused")
-        -- else 
-        --     print("Resumed")
-        -- end
         gamestate.push(pause)
 
     end
-
 end
 
 function game:keyreleased(key)
@@ -110,21 +81,16 @@ end
 function game:mousepressed(x, y, button)
     local cx, cy = cam:mousePosition() --position of mouse in relation to the world
     
-    -- if not gamepaused then
-        if button == 1 then --left click
+    if button == 1 then --left click
 
-            if player.state == "default" then --player is in normal gameplay
-                player:attack("light")
-
-            end
+        buttons:click(x, y)
+        if player.state == "default" then --player is in normal gameplay
+            player:attack("light")
 
         end
 
-    -- else
-        if button == 1 then
-            buttons:click(x, y)
-        end
-    -- end
+    end
+
 end
 
 

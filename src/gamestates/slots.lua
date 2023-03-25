@@ -35,5 +35,11 @@ function slots:mousepressed(x, y, button)
     end
 end
 
+function slots:keypressed(key)
+    if key == "escape" then
+        gamestate.pop()
+    end
+end
+
 return slots
 

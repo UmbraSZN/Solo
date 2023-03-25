@@ -41,5 +41,12 @@ function pause:mousepressed(x, y, button)
     end
 end
 
+function pause:keypressed(key)
+    if key == "escape" then
+        gamestate.pop()
+    end
+end
+
+
 return pause 
 

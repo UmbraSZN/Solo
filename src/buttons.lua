@@ -52,9 +52,27 @@ function buttons:menu(menuType)
         text = "Fullscreen"
         func = function()
             print("Fullscreen")
-            --fullscreen
+            local fs = love.window.getFullscreen()
+            love.window.setFullscreen(not fs)
+            
+            buttons:destroyAll()
+            local state = gamestate.current()
+            if state == menu then
+                buttons:menu("main")
+            elseif state == game then
+                buttons:menu("game")
+            elseif state == pause then
+                buttons:menu("paused")
+            elseif state == slots then
+                buttons:menu("slots")
+            elseif state == keybinds then
+                buttons:menu("keybinds")
+            elseif state == settings then
+                buttons:menu("settings")
+            end
         end
         buttons:new(text, bx, by, bw, bh, func)
+
         --difficulty (toggle - easy/medium/hard) [left2]
         text = "Difficulty"
         func = function()
@@ -62,6 +80,7 @@ function buttons:menu(menuType)
             --difficulty selector
         end
         buttons:new(text, bx, by + bh + buttonGapY, bw, bh, func)
+
         --keybinds [left3]
         text = "Keybinds"
         func = function()
@@ -81,6 +100,7 @@ function buttons:menu(menuType)
             --set resolution
         end
         buttons:new(text, bx, by, bw, bh, func)
+
         --volume (slider - %) [right2]
         text = "Volume"
         func = function()
@@ -88,6 +108,7 @@ function buttons:menu(menuType)
             --add slider
         end
         buttons:new(text, bx, by + bh + buttonGapY, bw, bh, func)
+
         --back (to previous menu) [right3]
         text = "Back"
         func = function()

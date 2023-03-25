@@ -35,5 +35,11 @@ function keybinds:mousepressed(x, y, button)
     end
 end
 
+function keybinds:keypressed(key)
+    if key == "escape" then
+        gamestate.pop()
+    end
+end
+
 return keybinds
 
