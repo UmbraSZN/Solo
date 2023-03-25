@@ -1,25 +1,28 @@
-local menu = {}
+local settings = {}
 
-function menu:enter() 
-    --gamepaused = false
+function settings:enter()
     buttons:destroyAll()
-    buttons:menu("main")
+    buttons:menu("settings")
 end
 
-function menu:resume()
-    buttons:menu("main")
-end
-
-function menu:resize()
+function settings:leave()
     buttons:destroyAll()
-    buttons:menu("main")
 end
 
-function menu:update(dt)
+function settings:resume()
+    buttons:menu("settings")
+end
+
+function settings:resize()
+    buttons:destroyAll()
+    buttons:menu("settings")
+end
+
+function settings:update(dt)
     buttons:update(dt)
 end
 
-function menu:draw()
+function settings:draw()
     buttons:draw()
 
     local cx, cy = love.mouse.getPosition()
@@ -29,7 +32,7 @@ function menu:draw()
     love.graphics.pop()
 end
 
-function menu:mousepressed(x, y, button)
+function settings:mousepressed(x, y, button)
 
     if button == 1 then --lmb
         buttons:click(x, y)
@@ -37,8 +40,5 @@ function menu:mousepressed(x, y, button)
 end
 
 
-return menu
+return settings
 
-
---pop (leave, no enter (does resume))
---push (same as switch, but no leave)

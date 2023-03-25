@@ -11,3 +11,6 @@ end
 
 
 
+function love.update()
+    --print(gamestate.current())
+end

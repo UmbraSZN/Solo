@@ -1,25 +1,24 @@
-local menu = {}
+local keybinds = {}
 
-function menu:enter() 
-    --gamepaused = false
+function keybinds:enter()
     buttons:destroyAll()
-    buttons:menu("main")
+    buttons:menu("keybinds")
 end
 
-function menu:resume()
-    buttons:menu("main")
-end
-
-function menu:resize()
+function keybinds:leave()
     buttons:destroyAll()
-    buttons:menu("main")
 end
 
-function menu:update(dt)
+function keybinds:resize()
+    buttons:destroyAll()
+    buttons:menu("keybinds")
+end
+
+function keybinds:update(dt)
     buttons:update(dt)
 end
 
-function menu:draw()
+function keybinds:draw()
     buttons:draw()
 
     local cx, cy = love.mouse.getPosition()
@@ -29,16 +28,12 @@ function menu:draw()
     love.graphics.pop()
 end
 
-function menu:mousepressed(x, y, button)
+function keybinds:mousepressed(x, y, button)
 
     if button == 1 then --lmb
         buttons:click(x, y)
     end
 end
 
+return keybinds
 
-return menu
-
-
---pop (leave, no enter (does resume))
---push (same as switch, but no leave)

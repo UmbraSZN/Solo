@@ -1,9 +1,32 @@
 local game = {}
 
+
+function game:enter(previous)
+    -- if previous ~= game then
+    --     gamepaused = false
+    -- end
+    buttons:destroyAll()
+end
+
+function game:resume() --may not need because leave is called with pop
+    --buttons:destroyAll()
+end
+
+function game:resize(w, h) --may not need
+    -- buttons:destroyAll()
+    -- if gamepaused then
+    --     buttons:menu("paused")
+    -- end
+end
+
 function game:update(dt)
-    if gamepaused then
-        --update pause menu?
-    return end --leaves the function
+    -- if gamepaused then
+    --     if table.getn(buttons) == 0 then --doesn't add buttons every frame
+    --         buttons:menu("paused") 
+    --     else
+    --         buttons:update(dt)
+    --     end
+    -- return end --leaves the update function
     player:update(dt)
     enemies:update(dt)
     gates:update(dt)
@@ -13,7 +36,9 @@ function game:update(dt)
 end
 
 function game:draw()
-    --make blurry if game paused
+    -- if gamepaused then 
+    --     --blur background
+    -- end
     cam:attach()
         world:draw()
         local cx, cy = cam:mousePosition()
@@ -26,16 +51,12 @@ function game:draw()
     cam:detach()
     love.graphics.print("Health: ".. player.health, 10, 10)
 
-    if gamepaused then
-        local ww = love.graphics.getWidth()
-        local wh = love.graphics.getHeight()
-        love.graphics.printf("Paused", 0, wh/2 - 50, ww, "center")--make buttons
-    end
+    -- if gamepaused then
+    --     buttons:draw()
+    -- end
 end
 
-function game:enter()
-    gamepaused = false
-end
+
 
 function game:keypressed(key)
 
@@ -66,13 +87,13 @@ function game:keypressed(key)
         gates:spawn(50, 80, "E")
 
     elseif key == "escape" then
-        --gamestate.switch(menu) --change
-        gamepaused = not gamepaused
-        if gamepaused then
-            print("Paused")
-        else 
-            print("Resumed")
-        end
+        -- gamepaused = not gamepaused
+        -- if gamepaused then
+        --     print("Paused")
+        -- else 
+        --     print("Resumed")
+        -- end
+        gamestate.push(pause)
 
     end
 
@@ -88,18 +109,24 @@ end
 
 function game:mousepressed(x, y, button)
     local cx, cy = cam:mousePosition() --position of mouse in relation to the world
+    
+    -- if not gamepaused then
+        if button == 1 then --left click
 
-    if button == 1 then --left click
+            if player.state == "default" then --player is in normal gameplay
+                player:attack("light")
 
-        --check if clicking a button?
-
-        if player.state == "default" and not gamepaused then --player is in normal gameplay
-            player:attack("light")
+            end
 
         end
 
-    end
+    -- else
+        if button == 1 then
+            buttons:click(x, y)
+        end
+    -- end
 end
+
 
 return game
 

@@ -17,6 +17,10 @@ function gamestates()
     loading = require("src/gamestates/loading") --is needed?
     menu = require("src/gamestates/menu")
     game = require("src/gamestates/game")
+    settings = require("src/gamestates/settings")
+    keybinds = require("src/gamestates/keybinds")
+    slots = require("src/gamestates/slots")
+    pause = require("src/gamestates/pause")
 
     gamepaused = false
     gamestate.registerEvents()
