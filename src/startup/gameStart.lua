@@ -6,6 +6,7 @@ function startGame()
     local wf = require("libraries/windfield")
     world = wf.newWorld(0, 0, false) --create world
     anim8 = require("libraries/anim8")
+    moonshine = require("libraries/moonshine")
 
     require("src/startup/require")
     requireAll()

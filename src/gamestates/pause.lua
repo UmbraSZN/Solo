@@ -24,7 +24,10 @@ function pause:update(dt)
 end
 
 function pause:draw()
-    self.from:draw() --add blur
+    effect = moonshine(moonshine.effects.gaussianblur)
+    effect(function()
+        self.from:draw()
+    end)
     buttons:draw()
 
     local cx, cy = love.mouse.getPosition()
