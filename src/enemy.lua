@@ -98,7 +98,7 @@ function enemies:spawn(x, y, type)
     end
 
     function enemy:rangeAttack(dt)
-        self.state = "attacking"
+        if self.attackDelay ~= 0 then return end
         self.attackDelay = 1.5
         local ex, ey = self:getPosition()
         local vx, vy = normalise(ex, ey, player:getX(), player:getY())
