@@ -1,109 +1,164 @@
 enemies = {}
+local projectiles = {}
 
-function enemies:spawn(x, y, type) --spawn a new enemy
+function enemies:spawn(x, y, type)
 
     local enemy
-    if type == "test" then
+    if type == "testclose" then
         enemy = world:newCircleCollider(x, y, 20)
-        enemy.speed = 50
+        enemy.speed = 80
         enemy.health = 100
+        enemy.damage = 10
         enemy.spawnX = x 
         enemy.spawnY = y 
         enemy.state = "default"
-        enemy.stunTimer = 0
         enemy.animTimer = 0
-        enemy.lightStun = 0.1
-        enemy.lightAttackDuration = 0.2
-        
-        
-    elseif type == "" then
-        --code for different mob type
+        enemy.attackTimer = 0
+        enemy.stunTimer = 0
+        enemy.knockback = 1
 
-    end
-
-    function enemy:move()
-        local enemyX, enemyY = self:getPosition()
-        local playerX, playerY = player:getPosition()
-
-        local dx, dy = playerX - enemyX, playerY - enemyY
-        local length = math.sqrt(dx^2 + dy^2)
-
-        if length < 200 and length >= 50 then --within detection range
-            --move to player
-            --add code to consider colliders
-            local vx, vy = dx/length, dy/length 
-            self:setLinearVelocity(vx * self.speed, vy * self.speed)
-
-        elseif length >= 200 then 
-            --return to spawn
-            local xToSpawn, yToSpawn = self.spawnX - enemyX, self.spawnY - enemyY
-            local lengthToSpawn = math.sqrt(xToSpawn^2 + yToSpawn^2)
-            if lengthToSpawn <= 5 then
-                enemy:wander()
-            else
-                local dx, dy = xToSpawn/lengthToSpawn, yToSpawn/lengthToSpawn
-                self:setLinearVelocity(dx * self.speed, dy * self.speed)
+        function enemy:update(dt)
+            local dist = self:checkRange()
+            local rad = self:getRadius()
+    
+            if self.state == "default" then
+                if dist < 250 + rad then
+                    self:moveToPlayer(dt)
+    
+                elseif dist >= 250 + rad then 
+                    self:returnToSpawn(dt)
+    
+                end
+    
+            elseif self.state == "stunned" then
+                self.stunTimer = manageCd(dt, self.stunTimer)
+                if self.stunTimer == 0 then
+                    self.state = "default"
+                end
+    
             end
-
-            
-
-        elseif length < 50 then --make value larger?
-            --enter combat mode
-            self:setLinearVelocity(0,0)
-            self:combat(dx, dy, length)
+    
+            if self:enter("Player") then
+                
+                local vx, vy = normalise(self:getX(), self:getY(), player:getX(), player:getY())
+                player:hit(enemy.damage, 0.1, vx, vy)
+            end
+    
         end
+    
+    elseif type == "testrange" then
+        enemy = world:newCircleCollider(x, y, 20)
+        enemy.speed = 40
+        enemy.health = 100
+        enemy.damage = 20
+        enemy.spawnX = x
+        enemy.spawnY = y
+        enemy.state = "default"
+        enemy.animTimer = 0
+        enemy.attackDelay = 0
+        enemy.stunTimer = 0
+        enemy.knockback = 4
 
-    end
-
-    function enemy:combat(dx, dy, length)
-        
-        if self.state == "default" then
-
-            self.state = "attacking"
-            self.animTimer = self.lightAttackDuration
-            local vx, vy = dx/length, dy/length
-            local query = world:queryCircleArea(self:getX() + vx * 40, self:getY() + vy * 40, 35, {"Player"})
-            
-            --add a delay/cooldown on attacking
-            for _, plr in ipairs(query) do
-                --check for block
-                --check if player can be damaged
-                if plr.iFrames == 0 then --not invincible
-
-                    if plr.blockDuration == 0 then
-                        plr.health = plr.health - 10 --change damage value based on a variable later
-                        plr.stunTimer = self.lightStun
-                        plr.state = "stunned"
-                        plr:setLinearVelocity(vx * 50, vy * 50)
-                    
-                    elseif plr.blockDuration < 0.5 then
-                        --parry
-                        print("parried")
-                        self.stunTimer = plr.parryStun
-                        self.state = "stunned"
-
-                    else
-                        --block
-                        print("blocked")
-                        plr.health = plr.health - 10 * 0.5 --change damage value based on a variable later
-                        plr.stunTimer = self.lightStun
-                        plr.state = "stunned"
-                        plr:setLinearVelocity(vx * 50, vy * 50) --reduce knockback?
-                    end
+        function enemy:update(dt)
+            local dist = self:checkRange()
+            local rad = self:getRadius()
+    
+            if self.state == "default" then
+                if dist < 400 + rad and dist >= 200 + rad then
+                    self:moveToPlayer(dt)
+                    self:rangeAttack(dt)
+    
+                elseif dist >= 400 + rad then 
+                    self:returnToSpawn(dt)
 
                 else
-                    print("dodged")
-                    --play atttack dodge sound
+                    self:moveAwayFromPlayer(dt)
+                    self:rangeAttack(dt)
+                
+                end
+    
+            elseif self.state == "stunned" then
+                self.stunTimer = manageCd(dt, self.stunTimer)
+                if self.stunTimer == 0 then
+                    self.state = "default"
+                end
+
+    
+            end
+
+            self.attackDelay = manageCd(dt, self.attackDelay)
+            if self.attackDelay == 0 then
+                if self.state ~= "stunned" then
+                    self.state = "default"
                 end
             end
+    
+        end
+
+    end
+
+    function enemy:rangeAttack(dt)
+        self.state = "attacking"
+        self.attackDelay = 1.5
+        local ex, ey = self:getPosition()
+        local vx, vy = normalise(ex, ey, player:getX(), player:getY())
+
+        --create projectile
+        local projectile = world:newCircleCollider(ex, ey, 5) --bullet
+        projectile:setCollisionClass("EnemyProj")
+        table.insert(projectiles, projectile)
+        projectile.timeToLive = 1.2
+        projectile:setLinearVelocity(vx * 500, vy * 500)
+    end
+
+    function enemy:checkRange()
+        local ex, ey = self:getPosition()
+        local px, py = player:getPosition()
+
+        local dx, dy = px - ex, py - ey
+        local length = math.sqrt(dx^2 + dy^2)
+
+        return length
+    end
+
+    function enemy:moveAwayFromPlayer(dt)
+        local ex, ey = self:getPosition()
+        local px, py = player:getPosition()
+        local vx, vy = normalise(ex, ey, px, py)
+
+        self:setLinearVelocity(-vx * self.speed, -vy * self.speed)
+    end
+
+    function enemy:moveToPlayer(dt)
+        local ex, ey = self:getPosition()
+        local px, py = player:getPosition()
+        local vx, vy = normalise(ex, ey, px, py)
+
+        self:setLinearVelocity(vx * self.speed, vy * self.speed)
+    end
+
+    function enemy:returnToSpawn(dt)
+        local ex, ey = self:getPosition()
+        local xToSpawn, yToSpawn = self.spawnX - ex, self.spawnY - ey
+        local lengthToSpawn = math.sqrt(xToSpawn^2 + yToSpawn^2)
+        if lengthToSpawn <= 5 then
+            self:setLinearVelocity(0, 0)
+            --enemy:wander() --implement
+        else
+            local vx, vy = xToSpawn/lengthToSpawn, yToSpawn/lengthToSpawn
+            self:setLinearVelocity(vx * self.speed, vy * self.speed)
         end
     end
 
-    function enemy:wander()
-        self:setLinearVelocity(0,0)
-        --need to add code
-        --randomly move around near spawn point
+    function enemy:hit(dmg, stun, vx, vy) --damage, stun and vectors of the attack
+
+        self.stunTimer = stun
+        self.state = "stunned"
+        self.health = self.health - dmg
+        self:setLinearVelocity(vx * 50 * self.knockback, vy * 50 * self.knockback)
+        
     end
+
 
     enemy:setCollisionClass("Enemy")
     table.insert(enemies, enemy)
@@ -112,31 +167,46 @@ end
 
 function enemies:update(dt)
 
+    projectiles:update(dt)
     for _, e in ipairs(enemies) do
+        e:update(dt)
 
-        if e.state == "default" then
-            e:move()
+    end
 
-        elseif e.state == "stunned" then
-            e.stunTimer = e.stunTimer - dt
-            if e.stunTimer < 0 then
-                e.stunTimer = 0
-                e.state = "default"
-            end
-
+    --kill enemies
+    for i = #enemies, 1, -1 do
+        if enemies[i].health <= 0 then --add loot drop
+            enemies[i]:destroy()
+            table.remove(enemies, i)
         end
-        
-        if e.animTimer > 0 then
-            e.animTimer = e.animTimer - dt
-            if e.animTimer <= 0 then
-                e.animTimer = 0
-                e.state = "default"
-            end
-        end
-
     end
 
 end
 
---local query = world:queryRectangleArea(self:getX() + vx * 20, self:getY() + vy * 20, 40, 100, {"Player"}) 
---rectangles may be better to use when attacking as they give better htiboxes however there was an issue with them interacting with circles 
+
+
+function projectiles:update(dt)
+    local toDelete = {}
+    for i, proj in ipairs(projectiles) do
+        proj.timeToLive = manageCd(dt, proj.timeToLive)
+        if proj.timeToLive == 0 then
+            table.insert(toDelete, proj)
+        end
+
+        if proj:enter("Player") or proj:enter("Wall") then
+            table.insert(toDelete, proj)
+        end
+    end
+
+
+    for i = #projectiles, 1, -1 do
+        for i, projToDel in pairs(toDelete) do
+            if projectiles[i] == projToDel then
+                projectiles[i]:destroy()
+                table.remove(projectiles, i)
+            end
+        end
+    end
+end
+
+

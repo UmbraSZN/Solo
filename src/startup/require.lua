@@ -3,6 +3,7 @@ function requireAll()
     require("src/startup/colliders")
     createCollisionClasses()
 
+    require("src/utils")
     require("src/player")
     require("src/camera")
     require("src/enemy")
