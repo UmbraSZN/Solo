@@ -107,7 +107,10 @@ function enemies:spawn(x, y, type)
         local projectile = world:newCircleCollider(ex, ey, 5) --bullet
         projectile:setCollisionClass("EnemyProj")
         table.insert(projectiles, projectile)
+        projectile.damage = self.damage
         projectile.timeToLive = 1.2
+        projectile.vx = vx
+        projectile.vy = vy
         projectile:setLinearVelocity(vx * 500, vy * 500)
     end
 
@@ -188,13 +191,21 @@ end
 function projectiles:update(dt)
     local toDelete = {}
     for i, proj in ipairs(projectiles) do
+
+        --reducing cooldowns
         proj.timeToLive = manageCd(dt, proj.timeToLive)
         if proj.timeToLive == 0 then
             table.insert(toDelete, proj)
         end
 
-        if proj:enter("Player") or proj:enter("Wall") then
+        --delete when hitting
+        if proj:enter("Player") or proj:enter("Wall") then 
             table.insert(toDelete, proj)
+        end
+
+        --deal damage
+        if proj:enter("Player") then 
+            player:hit(proj.damage, 0.1, proj.vx, proj.vy)
         end
     end
 
