@@ -21,13 +21,7 @@ function effects:spawn(x, y, type, rot, scale, lifetime, args)
         local g = anim8.newGrid(124, 150, effect.spriteSheet:getWidth(), effect.spriteSheet:getHeight())
         effect.anim = anim8.newAnimation(g("1-5", 1), 0.04, function() effect.dead = true end)
 
-    elseif type == "sword" then --maybe remove?
-        effect.spriteSheet = love.graphics.newImage(sprites.sword)
-        effect.width = effect.spriteSheet:getWidth()
-        effect.height = effect.spriteSheet:getHeight()
-        local g = anim8.newGrid(effect.width, effect.height, effect.width, effect.height)
-        effect.anim = anim8.newAnimation(g("1-1", 1), 0.01, function() effect.dead = true end)
-
+    
     elseif type == "gate" then
         effect.spriteSheet = love.graphics.newImage(sprites.gate)
         effect.width = 300

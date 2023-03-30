@@ -1,6 +1,6 @@
-player = world:newCircleCollider(0, 0, 20) --x, y, radius
+player = world:newCircleCollider(200, 150, 8) --x, y, radius
 player:setCollisionClass("Player")
-player.speed = 120
+player.speed = 80
 player.health = 100
 player.state = "default"
 player.iFrames = 0
@@ -70,8 +70,8 @@ function player:update(dt)
         local vx, vy = normalise(px, py, mx, my)
         local rot = math.atan2(vy, vx)
 
-        effects:spawn(px + vx * 40, py + vy * 40, "swordSwipe", rot - math.pi/4)
-        local query = world:queryCircleArea(self:getX() + vx * 40, self:getY() + vy * 40, 35, {"Enemy"})
+        effects:spawn(px + vx * 20, py + vy * 20, "swordSwipe", rot - math.pi/4, 0.5)
+        local query = world:queryCircleArea(self:getX() + vx * 20, self:getY() + vy * 20, 20, {"Enemy"})
         for _, e in ipairs(query) do
             e:hit(10, 0.1, vx, vy) --change damage value based on a variable later
         end
@@ -122,7 +122,7 @@ function player:dodge()
     end
 
     player:setLinearDamping(0.5)
-    player:setLinearVelocity(vx * 400, vy * 400)
+    player:setLinearVelocity(vx * 220, vy * 220)
 end
 
 
@@ -149,7 +149,7 @@ function player:hit(dmg, stun, vx, vy)
         self.stunTimer = stun
         self.state = "stunned"
         self.health = self.health - dmg
-        self:setLinearVelocity(vx * 500, vy * 500)
+        self:setLinearVelocity(vx * 300, vy * 300)
     else
         --dodge (no damage)
         print("dodged")

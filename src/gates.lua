@@ -2,11 +2,11 @@ gates = {}
 
 function gates:spawn(x, y, level)
 
-    local gate = world:newBSGRectangleCollider(x - 15, y - 25, 30, 50, 10) 
+    local gate = world:newBSGRectangleCollider(x - 6, y - 10, 12, 20, 10) 
     gate:setCollisionClass("Gate")
     gate:setType("static")
     gate.timer = 10 --will increase later
-    effects:spawn(x, y, "gate", 0, 0.25, gate.timer)
+    effects:spawn(x, y, "gate", 0, 0.1, gate.timer)
 
     if level == "E" then
         

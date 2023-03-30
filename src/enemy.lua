@@ -5,7 +5,7 @@ function enemies:spawn(x, y, type)
 
     local enemy
     if type == "testclose" then
-        enemy = world:newCircleCollider(x, y, 20)
+        enemy = world:newCircleCollider(x, y, 8)
         enemy.speed = 80
         enemy.health = 100
         enemy.damage = 10
@@ -22,10 +22,10 @@ function enemies:spawn(x, y, type)
             local rad = self:getRadius()
     
             if self.state == "default" then
-                if dist < 250 + rad then
+                if dist < 150 + rad then
                     self:moveToPlayer(dt)
     
-                elseif dist >= 250 + rad then 
+                elseif dist >= 150 + rad then 
                     self:returnToSpawn(dt)
     
                 end
@@ -47,8 +47,8 @@ function enemies:spawn(x, y, type)
         end
     
     elseif type == "testrange" then
-        enemy = world:newCircleCollider(x, y, 20)
-        enemy.speed = 40
+        enemy = world:newCircleCollider(x, y, 8)
+        enemy.speed = 50
         enemy.health = 100
         enemy.damage = 20
         enemy.spawnX = x
@@ -64,11 +64,11 @@ function enemies:spawn(x, y, type)
             local rad = self:getRadius()
     
             if self.state == "default" then
-                if dist < 400 + rad and dist >= 200 + rad then
+                if dist < 150 + rad and dist >= 75 + rad then
                     self:moveToPlayer(dt)
                     self:rangeAttack(dt)
     
-                elseif dist >= 400 + rad then 
+                elseif dist >= 150 + rad then 
                     self:returnToSpawn(dt)
 
                 else
@@ -104,15 +104,15 @@ function enemies:spawn(x, y, type)
         local vx, vy = normalise(ex, ey, player:getX(), player:getY())
 
         --create projectile
-        local projectile = world:newCircleCollider(ex, ey, 5) --bullet
+        local projectile = world:newCircleCollider(ex, ey, 4) --bullet
         projectile:setCollisionClass("EnemyProj")
         table.insert(projectiles, projectile)
         projectile.damage = self.damage
         projectile.timeToLive = 1.2
         projectile.vx = vx
         projectile.vy = vy
-        projectile:setLinearVelocity(vx * 500, vy * 500)
-        effects:spawn(projectile:getX(), projectile:getY(), "fireball", 0, 1.5, nil, projectile)
+        projectile:setLinearVelocity(vx * 200, vy * 200)
+        effects:spawn(projectile:getX(), projectile:getY(), "fireball", 0, 0.6, nil, projectile)
     end
 
     function enemy:checkRange()
@@ -159,7 +159,7 @@ function enemies:spawn(x, y, type)
         self.stunTimer = stun
         self.state = "stunned"
         self.health = self.health - dmg
-        self:setLinearVelocity(vx * 50 * self.knockback, vy * 50 * self.knockback)
+        self:setLinearVelocity(vx * 30 * self.knockback, vy * 30 * self.knockback)
         
     end
 

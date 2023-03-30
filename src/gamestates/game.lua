@@ -39,14 +39,12 @@ end
 function game:keypressed(key)
 
     if key == "o" then --debugging
-        local testEnemy = enemies:spawn(120, 40, "testrange")
+        local testEnemy = enemies:spawn(120, 240, "testrange")
 
     elseif key == "l" then --debugging
-        local testDummy = world:newCircleCollider(0, 0, 20)
-        testDummy.health = 100
-        testDummy:setCollisionClass("Enemy")
+        local testEnemy = enemies:spawn(200, 240, "testclose")
 
-    elseif key == "q" and player.state == "default" and player.dashCdTimer == 0 then --dodge/dash
+    elseif key == "space" and player.state == "default" and player.dashCdTimer == 0 then --dodge/dash
         player:dodge()
 
         
@@ -56,7 +54,7 @@ function game:keypressed(key)
 
     elseif key == "i" then --debugging
         --spawn gate
-        gates:spawn(50, 80, "E")
+        gates:spawn(200, 200, "E")
 
     elseif key == "escape" then
         gamestate.push(pause)
