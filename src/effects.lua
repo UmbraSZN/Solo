@@ -1,13 +1,16 @@
 effects = {}
 
-function effects:spawn(x, y, type, rot, scale, lifetime)
+function effects:spawn(x, y, type, rot, scale, lifetime, args)
     
     local effect = {}
     effect.x = x 
     effect.y = y
     effect.rot = rot or 0
     effect.scale = scale or 1
+    effect.ox = 0
+    effect.oy = 0
     effect.lifetime = lifetime or nil
+    effect.args = args or nil
     effect.dead = false
     effect.type = type
 
@@ -41,6 +44,21 @@ function effects:spawn(x, y, type, rot, scale, lifetime)
             end
         end
 
+    elseif type == "fireball" then
+        effect.spriteSheet = love.graphics.newImage(sprites.fireball)
+        effect.width = 64
+        effect.height = 64
+        effect.ox = -20
+        effect.rot = math.atan2(args.vy, args.vx) + math.pi
+        
+        local g = anim8.newGrid(64, 64, effect.spriteSheet:getWidth(), effect.spriteSheet:getHeight())
+        effect.anim = anim8.newAnimation(g("1-8", 1), 0.08)
+
+        function effect:update(dt)
+            self.x = self.args:getX()
+            self.y = self.args:getY()
+        end
+
     end
 
     
@@ -72,7 +90,15 @@ function effects:draw()
 
     for _, e in ipairs(effects) do
         if e.anim then
-            e.anim:draw(e.spriteSheet, e.x, e.y, e.rot, e.scale, e.scale, e.width/2, e.height/2)
+            e.anim:draw(e.spriteSheet, e.x, e.y, e.rot, e.scale, e.scale, e.width/2 + e.ox, e.height/2 + e.oy)
+        end
+    end
+end
+
+function effects:removeProjectile(proj)
+    for i, effect in ipairs(effects) do
+        if effect.args == proj then
+            table.remove(effects, i)
         end
     end
 end

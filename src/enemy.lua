@@ -112,6 +112,7 @@ function enemies:spawn(x, y, type)
         projectile.vx = vx
         projectile.vy = vy
         projectile:setLinearVelocity(vx * 500, vy * 500)
+        effects:spawn(projectile:getX(), projectile:getY(), "fireball", 0, 1.5, nil, projectile)
     end
 
     function enemy:checkRange()
@@ -198,7 +199,7 @@ function projectiles:update(dt)
             table.insert(toDelete, proj)
         end
 
-        --delete when hitting
+        --add to delete table when hitting
         if proj:enter("Player") or proj:enter("Wall") then 
             table.insert(toDelete, proj)
         end
@@ -207,12 +208,15 @@ function projectiles:update(dt)
         if proj:enter("Player") then 
             player:hit(proj.damage, 0.1, proj.vx, proj.vy)
         end
+
+
     end
 
-
+    --delete projectiles in delete table
     for i = #projectiles, 1, -1 do
         for i, projToDel in pairs(toDelete) do
             if projectiles[i] == projToDel then
+                effects:removeProjectile(projectiles[i])
                 projectiles[i]:destroy()
                 table.remove(projectiles, i)
             end
