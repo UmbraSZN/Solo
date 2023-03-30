@@ -7,6 +7,7 @@ function startGame()
     world = wf.newWorld(0, 0, false) --create world
     anim8 = require("libraries/anim8")
     moonshine = require("libraries/moonshine")
+    sti = require("libraries/sti")
 
     require("src/startup/require")
     requireAll()
