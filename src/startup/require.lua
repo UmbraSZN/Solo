@@ -11,5 +11,6 @@ function requireAll()
     require("src/gates")
     require("src/startup/resources")
     require("src/buttons")
+    require("src/maps")
 end
 

@@ -3,9 +3,11 @@ function love.load()
     startGame()
     
     world:setQueryDebugDrawing(true)
-    local testCollider = world:newRectangleCollider(100, 150, 80, 200)
-    testCollider:setType("static")
-    testCollider:setCollisionClass("Wall")
+    -- local testCollider = world:newRectangleCollider(100, 150, 80, 200)
+    -- testCollider:setType("static")
+    -- testCollider:setCollisionClass("Wall")
+
+    loadMap("Overworld Map")
 end
 
 

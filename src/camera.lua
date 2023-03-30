@@ -1,5 +1,5 @@
 camera = require("libraries/hump/camera")
-cam = camera(0, 0)
+cam = camera(0, 0, 3)
 
 function cam:update(dt)
     local camX, camY = player:getPosition()

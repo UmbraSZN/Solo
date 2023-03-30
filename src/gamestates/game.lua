@@ -19,8 +19,8 @@ function game:update(dt)
 end
 
 function game:draw()
-
     cam:attach()
+        drawMap()
         world:draw()
         local cx, cy = cam:mousePosition()
         love.graphics.push("all")
