@@ -17,6 +17,14 @@ function enemies:spawn(x, y, type)
         enemy.stunTimer = 0
         enemy.knockback = 1
 
+        local g = anim8.newGrid(16, 17, sprites.skeleton:getWidth(), sprites.skeleton:getHeight())
+        enemy.animations = {} 
+        enemy.animations.left = anim8.newAnimation(g("1-6", 1), 0.15)
+        enemy.animations.right = anim8.newAnimation(g("1-6", 2), 0.15)
+        enemy.animations.up = anim8.newAnimation(g("1-6", 3), 0.15)
+        enemy.animations.down = anim8.newAnimation(g("1-6", 4), 0.15)
+        enemy.anim = enemy.animations.down
+
         function enemy:update(dt)
             local dist = self:checkRange()
             local rad = self:getRadius()
@@ -43,6 +51,21 @@ function enemies:spawn(x, y, type)
                 local vx, vy = normalise(self:getX(), self:getY(), player:getX(), player:getY())
                 player:hit(enemy.damage, 0.1, vx, vy)
             end
+
+            local vx, vy = self:getLinearVelocity()
+            local rot = math.atan2(vy, vx)
+            if rot == 0 then return end 
+            if rot < math.pi/4 and rot > -math.pi/4 then
+                self.anim = self.animations.right
+            elseif rot <= 3*math.pi/2 and rot >= math.pi/4 then
+                self.anim = self.animations.down
+            elseif rot >= -3*math.pi/4 and rot <= -math.pi/4 then
+                self.anim = self.animations.up
+            else 
+                self.anim = self.animations.left
+            end
+
+            self.anim:update(dt)
     
         end
     
@@ -59,6 +82,14 @@ function enemies:spawn(x, y, type)
         enemy.stunTimer = 0
         enemy.knockback = 4
 
+        local g = anim8.newGrid(16, 17, sprites.skeleton:getWidth(), sprites.skeleton:getHeight())
+        enemy.animations = {}
+        enemy.animations.left = anim8.newAnimation(g("1-6", 1), 0.09)
+        enemy.animations.right = anim8.newAnimation(g("1-6", 2), 0.09)
+        enemy.animations.up = anim8.newAnimation(g("1-6", 3), 0.09)
+        enemy.animations.down = anim8.newAnimation(g("1-6", 4), 0.09)
+        enemy.anim = enemy.animations.down
+
         function enemy:update(dt)
             local dist = self:checkRange()
             local rad = self:getRadius()
@@ -71,8 +102,12 @@ function enemies:spawn(x, y, type)
                 elseif dist >= 150 + rad then 
                     self:returnToSpawn(dt)
 
-                else
+                elseif dist <= 70 then
                     self:moveAwayFromPlayer(dt)
+                    self:rangeAttack(dt)
+
+                else
+                    self:setLinearVelocity(0, 0)
                     self:rangeAttack(dt)
                 
                 end
@@ -92,7 +127,22 @@ function enemies:spawn(x, y, type)
                     self.state = "default"
                 end
             end
-    
+
+            --angle enemy based on their movement direction
+            local vx, vy = self:getLinearVelocity()
+            local rot = math.atan2(vy, vx)
+            if rot == 0 then return end 
+            if rot < math.pi/4 and rot > -math.pi/4 then
+                self.anim = self.animations.right
+            elseif rot <= 3*math.pi/2 and rot >= math.pi/4 then
+                self.anim = self.animations.down
+            elseif rot >= -3*math.pi/4 and rot <= -math.pi/4 then
+                self.anim = self.animations.up
+            else 
+                self.anim = self.animations.left
+            end
+
+            self.anim:update(dt)
         end
 
     end
@@ -185,6 +235,15 @@ function enemies:update(dt)
         end
     end
 
+end
+
+function enemies:draw()
+
+    for _, enemy in ipairs(enemies) do
+        local x, y = enemy:getPosition()
+
+        enemy.anim:draw(sprites.skeleton, x, y - 2, nil, 1, nil, 8, 8)
+    end
 end
 
 

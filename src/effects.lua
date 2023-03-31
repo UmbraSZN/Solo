@@ -15,7 +15,7 @@ function effects:spawn(x, y, type, rot, scale, lifetime, args)
     effect.type = type
 
     if type == "swordSwipe" then
-        effect.spriteSheet = love.graphics.newImage(sprites.swordSwipe)
+        effect.spriteSheet = sprites.swordSwipe
         effect.width = 124
         effect.height = 150
         local g = anim8.newGrid(124, 150, effect.spriteSheet:getWidth(), effect.spriteSheet:getHeight())
@@ -23,7 +23,7 @@ function effects:spawn(x, y, type, rot, scale, lifetime, args)
 
     
     elseif type == "gate" then
-        effect.spriteSheet = love.graphics.newImage(sprites.gate)
+        effect.spriteSheet = sprites.gate
         effect.width = 300
         effect.height = 300
         local g = anim8.newGrid(300, 300, effect.spriteSheet:getWidth(), effect.spriteSheet:getHeight())
@@ -39,7 +39,7 @@ function effects:spawn(x, y, type, rot, scale, lifetime, args)
         end
 
     elseif type == "fireball" then
-        effect.spriteSheet = love.graphics.newImage(sprites.fireball)
+        effect.spriteSheet = sprites.fireball
         effect.width = 64
         effect.height = 64
         effect.ox = -20

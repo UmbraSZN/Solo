@@ -9,7 +9,6 @@ function requireAll()
     require("src/enemy")
     require("src/effects")
     require("src/gates")
-    require("src/startup/resources")
     require("src/buttons")
     require("src/maps")
 end

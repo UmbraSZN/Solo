@@ -11,6 +11,15 @@ player.attackTimer = 0
 player.dashDuration = 0.25
 player.dashCd = 1
 
+local g = anim8.newGrid(32, 32, sprites.player:getWidth(), sprites.player:getHeight())
+player.animations = {}
+player.animations.down = anim8.newAnimation(g("1-4", 1), 0.15)
+player.animations.left = anim8.newAnimation(g("1-4", 2), 0.15)
+player.animations.up = anim8.newAnimation(g("1-4", 3), 0.15)
+player.animations.right = anim8.newAnimation(g("1-4", 4), 0.15)
+
+player.anim = player.animations.down
+
 
 
 function player:update(dt)
@@ -20,20 +29,29 @@ function player:update(dt)
 
         --moving player(w, a, s, d)
         local vx, vy = 0, 0 --vectors
+        local isMoving = false
         if love.keyboard.isDown("a") then
             vx = player.speed * -1
+            player.anim = player.animations.left
+            isMoving = true
         end
 
         if love.keyboard.isDown("d") then
             vx = player.speed
+            player.anim = player.animations.right
+            isMoving = true
         end
 
         if love.keyboard.isDown("s") then
             vy = player.speed
+            player.anim = player.animations.down
+            isMoving = true
         end
 
         if love.keyboard.isDown("w") then
             vy = player.speed * -1
+            player.anim = player.animations.up
+            isMoving = true
         end
 
         if vx ~= 0 and vy ~= 0 then
@@ -41,7 +59,12 @@ function player:update(dt)
             vy = vy/math.sqrt(2)
         end
 
+        if isMoving == false then
+            player.anim:gotoFrame(4)
+        end
+
         player:setLinearVelocity(vx, vy)
+        player.anim:update(dt)
 
 
     elseif player.state == "stunned" then
@@ -161,6 +184,14 @@ function player:checkDead()
     if player.health <= 0 then
         --love.event.quit()
     end
+end
+
+
+function player:draw()
+    local x, y = self:getPosition()
+
+    player.anim:draw(sprites.player, x, y-6, nil, 1, nil, 16, 16)
+
 end
 
 
