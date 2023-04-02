@@ -9,5 +9,6 @@ function love.conf(t)
     t.window.minwidth = 854 --480p
     t.window.minheight = 480 --480p
     t.window.fullscreen = false --store in save files?
+
 end
 

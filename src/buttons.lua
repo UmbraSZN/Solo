@@ -24,7 +24,7 @@ function buttons:menu(menuType)
         text = "Play"
         func = function()
             --gamestate.switch(game)
-            gamestate.push(game)
+            gamestate.push(game, "Overworld Map")
         end
         buttons:new(text, bx, by, bw, bh, func)
 

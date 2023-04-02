@@ -24,7 +24,7 @@ function pause:update(dt)
 end
 
 function pause:draw()
-    effect = moonshine(moonshine.effects.gaussianblur)
+    local effect = moonshine(moonshine.effects.gaussianblur)
     effect(function()
         self.from:draw()
     end)

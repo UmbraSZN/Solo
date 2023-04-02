@@ -47,8 +47,8 @@ function gates:spawn(x, y, level)
         end
 
         if self:enter("Player") then
-            print("tp")
             --teleport player to dungeon
+            gamestate.push(game, "Dungeon")
         end
     end
 

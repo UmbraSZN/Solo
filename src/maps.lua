@@ -1,12 +1,23 @@
 function loadMap(mapName)
+    destroyAll()
+    print(mapName)
     gameMap = sti("assets/maps/" .. mapName .. ".lua")
+    map = mapName
+    --print(gameMap) --table
     addWalls()
+    if mapName == "Dungeon" then
+        player:setPosition(200, 300) --x = 2507.1662597656 (lines)
+    end
 end
 
 function drawMap()
 
     if gameMap.layers["Ground"] then
         gameMap:drawLayer(gameMap.layers["Ground"])
+    end
+
+    if gameMap.layers["More Ground"] then
+        gameMap:drawLayer(gameMap.layers["More Ground"])
     end
 
     if gameMap.layers["Ground acc"] then

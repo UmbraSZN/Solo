@@ -1,8 +1,9 @@
 local game = {}
 
 
-function game:enter()
+function game:enter(from, mapToLoad)
     buttons:destroyAll()
+    loadMap(mapToLoad)
 end
 
 
@@ -19,18 +20,19 @@ function game:update(dt)
 end
 
 function game:draw()
-    cam:attach()
-        drawMap()
-        --world:draw()
-        local cx, cy = cam:mousePosition()
-        love.graphics.push("all")
-        love.graphics.setColor(0, 1, 0)
-        love.graphics.circle("fill", cx, cy, 1)
-        love.graphics.pop()
-        enemies:draw()
-        effects:draw()
-        player:draw()
-    cam:detach()
+    
+        if map == "Dungeon" then
+            local effect = moonshine(moonshine.effects.vignette)
+            effect.vignette.opacity = 1
+            effect.vignette.softness = 0.6
+            effect.vignette.radius = 0.9
+            effect(function()
+                drawGame()
+            end)
+        else
+            drawGame()
+        end
+    
     love.graphics.print("Health: ".. player.health, 10, 10)
 
 end

@@ -17,17 +17,17 @@ function manageCd(dt, cd) --change in time and cooldown time
 end
 
 --clear non-collider tables
-function clearTable(table) --table to clear
-    for i = #table, 1, -1 do
-        table.remove(table, i)
+function clearTable(tableToClear) --table to clear
+    for i = #tableToClear, 1, -1 do
+        table.remove(tableToClear, i)
     end
 end
 
 --clear collider tables
-function clearColliderTable(table) --table to clear
-    for i = #table, 1, -1 do
-        table[i]:destroy()
-        table.remove(table, i)
+function clearColliderTable(tableToClear) --table to clear
+    for i = #tableToClear, 1, -1 do
+        tableToClear[i]:destroy()
+        table.remove(tableToClear, i)
     end
 end
 
@@ -35,6 +35,23 @@ end
 function destroyAll()
     clearColliderTable(walls)
     clearColliderTable(enemies)
+    clearColliderTable(gates)
     clearTable(effects)
 end
+
+function drawGame()
+    cam:attach()
+        drawMap()
+        world:draw()
+        local cx, cy = cam:mousePosition()
+        love.graphics.push("all")
+        love.graphics.setColor(0, 1, 0)
+        love.graphics.circle("fill", cx, cy, 1)
+        love.graphics.pop()
+        enemies:draw()
+        effects:draw()
+        player:draw()
+    cam:detach()
+end
+
 
