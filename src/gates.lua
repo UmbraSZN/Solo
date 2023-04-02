@@ -6,7 +6,6 @@ function gates:spawn(x, y, level)
     gate:setCollisionClass("Gate")
     gate:setType("static")
     gate.timer = 10 --will increase later
-    effects:spawn(x, y, "gate", 0, 0.1, gate.timer)
 
     if level == "E" then
         
@@ -26,14 +25,15 @@ function gates:spawn(x, y, level)
     elseif level == "S" then
 
     
+    elseif level == nil then
+        gate.timer = math.huge
+    
     end
 
-    --add more specific gate functions
 
     function gate:update(dt)
 
         gate.timer = gate.timer - dt 
-        --print(gate.timer)
 
         if gate.timer <= 0 then
             --remove gate
@@ -48,11 +48,15 @@ function gates:spawn(x, y, level)
 
         if self:enter("Player") then
             --teleport player to dungeon
-            gamestate.push(game, "Dungeon")
+            if map == "Dungeon" then
+                gamestate.pop()
+            else
+                gamestate.push(game, "Dungeon")
+            end
         end
     end
 
-
+    effects:spawn(x, y, "gate", 0, 0.1, gate.timer)
     table.insert(gates, gate)
 end
 

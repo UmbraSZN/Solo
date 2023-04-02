@@ -10,6 +10,11 @@ end
 function game:resize(w, h)
 end
 
+function game:resume()
+    loadMap("Overworld Map")
+    player:setPosition(200, 150)
+end
+
 function game:update(dt)
     player:update(dt)
     enemies:update(dt)

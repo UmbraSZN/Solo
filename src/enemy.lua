@@ -4,7 +4,7 @@ local projectiles = {}
 function enemies:spawn(x, y, type)
 
     local enemy
-    if type == "testclose" then
+    if type == "melee" then
         enemy = world:newCircleCollider(x, y, 8)
         enemy.speed = 80
         enemy.health = 100
@@ -69,7 +69,7 @@ function enemies:spawn(x, y, type)
     
         end
     
-    elseif type == "testrange" then
+    elseif type == "ranged" then
         enemy = world:newCircleCollider(x, y, 8)
         enemy.speed = 50
         enemy.health = 100
