@@ -213,7 +213,12 @@ function enemies:spawn(x, y, type)
         
     end
 
+    function enemy:giveExp()
+        player.playerstats.exp = player.playerstats.exp + self.exp
+    end
+    
 
+    enemy.exp = 10
     enemy:setCollisionClass("Enemy")
     table.insert(enemies, enemy)
 end
@@ -230,6 +235,7 @@ function enemies:update(dt)
     --kill enemies
     for i = #enemies, 1, -1 do
         if enemies[i].health <= 0 then --add loot drop
+            enemies[i]:giveExp()
             enemies[i]:destroy()
             table.remove(enemies, i)
         end
@@ -245,7 +251,6 @@ function enemies:draw()
         enemy.anim:draw(sprites.skeleton, x, y - 2, nil, 1, nil, 8, 8)
     end
 end
-
 
 
 function projectiles:update(dt)

@@ -40,18 +40,20 @@ function destroyAll()
 end
 
 function drawGame()
+    
     cam:attach()
         drawMap()
         --world:draw()
         local cx, cy = cam:mousePosition()
         love.graphics.push("all")
-        love.graphics.setColor(0, 1, 0)
+        love.graphics.setColor(0, 1, 0) --green
         love.graphics.circle("fill", cx, cy, 1)
         love.graphics.pop()
         enemies:draw()
         effects:draw()
         player:draw()
     cam:detach()
+    
 end
 
 

@@ -1,9 +1,7 @@
 function loadMap(mapName)
     destroyAll()
-    print(mapName)
     gameMap = sti("assets/maps/" .. mapName .. ".lua")
     map = mapName
-    --print(gameMap) --table
     addWalls()
     if mapName == "Dungeon" then
         player:setPosition(200, 300)

@@ -37,8 +37,14 @@ function game:draw()
         else
             drawGame()
         end
+        
+        player:drawBars()
+
+        if player.playerstats.points > 0 then
+            player:drawInvestmentScreen()
+        end
     
-    love.graphics.print("Health: ".. player.health, 10, 10)
+    love.graphics.print("Level: ".. player.playerstats.lvl, 10, 10)
 
 end
 
@@ -47,10 +53,10 @@ end
 function game:keypressed(key)
 
     if key == "o" then --debugging
-        local testEnemy = enemies:spawn(120, 240, "testrange")
+        local testEnemy = enemies:spawn(120, 240, "ranged")
 
     elseif key == "l" then --debugging
-        local testEnemy = enemies:spawn(200, 240, "testclose")
+        local testEnemy = enemies:spawn(200, 240, "melee")
 
     elseif key == "space" and player.state == "default" and player.dashCdTimer == 0 then --dodge/dash
         player:dodge()
