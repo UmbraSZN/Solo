@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="250" height="250" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="470">
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="250" height="250" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="490">
  <editorsettings>
   <export target="Overworld Map.lua" format="lua"/>
  </editorsettings>
@@ -2108,5 +2108,27 @@
   <object id="467" x="736" y="340" width="12" height="11"/>
   <object id="468" x="788" y="340" width="12" height="11"/>
   <object id="469" x="178" y="483" width="12" height="9"/>
+ </objectgroup>
+ <objectgroup id="13" name="Gates">
+  <object id="470" x="70" y="242" width="9" height="10"/>
+  <object id="471" x="333" y="214" width="8" height="9"/>
+  <object id="472" x="633" y="235" width="9" height="10"/>
+  <object id="473" x="720" y="570" width="13" height="13"/>
+  <object id="474" x="369" y="667" width="14" height="14"/>
+  <object id="475" x="509" y="767" width="16" height="15"/>
+  <object id="476" x="315" y="515" width="12" height="13"/>
+  <object id="477" x="598" y="379" width="13" height="14"/>
+  <object id="478" x="767" y="763" width="16" height="16"/>
+  <object id="479" x="902" y="865" width="11" height="12"/>
+  <object id="480" x="103" y="825" width="10" height="11"/>
+  <object id="481" x="104" y="552" width="10" height="10"/>
+  <object id="482" x="218" y="317" width="12" height="12"/>
+  <object id="483" x="527" y="189" width="10" height="11"/>
+  <object id="484" x="737" y="185" width="8" height="8"/>
+  <object id="485" x="86" y="93" width="8" height="9"/>
+  <object id="486" x="907" y="712" width="14" height="13"/>
+  <object id="487" x="850" y="490" width="9" height="9"/>
+  <object id="488" x="859" y="151" width="12" height="12"/>
+  <object id="489" x="173" y="701" width="12" height="12"/>
  </objectgroup>
 </map>

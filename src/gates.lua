@@ -1,5 +1,5 @@
 gates = {}
-
+local timer = 5
 function gates:spawn(x, y, level)
 
     local gate = world:newBSGRectangleCollider(x - 6, y - 10, 12, 20, 10) 
@@ -8,22 +8,9 @@ function gates:spawn(x, y, level)
     gate.timer = 10 --will increase later
 
     if level == "E" then
-        
+        gate.timer = 60
 
-    elseif level == "D" then
-
-
-    elseif level == "C" then
-
-
-    elseif level == "B" then
-
-
-    elseif level == "A" then
-
-    
-    elseif level == "S" then
-
+    --add more gate levels
     
     elseif level == nil then
         gate.timer = math.huge
@@ -62,6 +49,9 @@ end
 
 
 function gates:update(dt)
+    if map == "Overworld Map" then
+        gates:attemptSpawn(dt)
+    end
 
     for _, g in ipairs(gates) do
         g:update(dt)
@@ -70,9 +60,20 @@ function gates:update(dt)
 
 end
 
+function gates:attemptSpawn(dt)
+    timer = manageCd(dt, timer)
+    if timer == 0 then
+        timer = 5
 
+        local rng = love.math.random(1, 5)
+        if rng == 5 then
+            --spawn a gate
+            for i, obj in ipairs(gameMap.layers["Gates"].objects) do
+                gates:spawn(obj.x, obj.y, "E")
+                break
+            end
+        end
+    end
 
-
-
-
+end
 

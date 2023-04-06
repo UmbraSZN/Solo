@@ -34,3 +34,4 @@ end
 function love.quit()
     saveData(player.playerstats)
 end
+
