@@ -6,9 +6,9 @@ function enemies:spawn(x, y, type)
     local enemy
     if type == "melee" then
         enemy = world:newCircleCollider(x, y, 8)
-        enemy.speed = 80
-        enemy.health = 100
-        enemy.damage = 10
+        enemy.speed = 80 + player.playerstats.lvl
+        enemy.health = 50 + (player.playerstats.lvl * 10)
+        enemy.damage = 5 + (player.playerstats.lvl * 10)
         enemy.spawnX = x 
         enemy.spawnY = y 
         enemy.state = "default"
@@ -71,9 +71,9 @@ function enemies:spawn(x, y, type)
     
     elseif type == "ranged" then
         enemy = world:newCircleCollider(x, y, 8)
-        enemy.speed = 50
-        enemy.health = 100
-        enemy.damage = 20
+        enemy.speed = 40 + (player.playerstats.lvl * 3)
+        enemy.health = 30 + (player.playerstats.lvl * 5)
+        enemy.damage = 10 + (player.playerstats.lvl * 5)
         enemy.spawnX = x
         enemy.spawnY = y
         enemy.state = "default"
@@ -217,8 +217,10 @@ function enemies:spawn(x, y, type)
         player.playerstats.exp = player.playerstats.exp + self.exp
     end
     
-
-    enemy.exp = 10
+    local rng = love.math.random(2, 8)
+    local rng2 = love.math.random(2, 8)
+    local rngTotal = rng + rng2
+    enemy.exp = math.floor(4*(player.playerstats.lvl)^1.4)/rngTotal
     enemy:setCollisionClass("Enemy")
     table.insert(enemies, enemy)
 end

@@ -70,6 +70,7 @@ function addEnemies()
     if gameMap.layers["Enemies"] then
         local enemyTotal = 0 --make total enemies based on gate rank (more with higher gate rank)
         for i, obj in ipairs(gameMap.layers["Enemies"].objects) do
+
             --attempt enemy spawn
             local rng = love.math.random() --make rng weight based on gate rank (more with higher gate rank)
             if rng < 0.25 then
