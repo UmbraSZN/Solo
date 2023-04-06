@@ -24,9 +24,17 @@ player.health = 100 + (player.playerstats.vitality * 5)
 
 
 function player:update(dt)
+    
     player.damage = 5 + (player.playerstats.strength * 2)
     player.speed = 70 + (player.playerstats.agility * 0.25)
     player.maxHealth = 100 + (player.playerstats.vitality * 5)
+
+    if player.health <= 0 then
+        player.health = player.maxHealth 
+        player:setLinearVelocity(0, 0)
+        gamestate.switch(dead)
+        return 
+    end
 
     if player.state ~= "stunned" and player.state ~= "dashing" then
         player:setLinearDamping(0)

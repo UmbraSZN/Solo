@@ -23,6 +23,7 @@ function gamestates()
     keybinds = require("src/gamestates/keybinds")
     slots = require("src/gamestates/slots")
     pause = require("src/gamestates/pause")
+    dead = require("src/gamestates/dead")
 
     gamestate.registerEvents()
     gamestate.switch(menu)
