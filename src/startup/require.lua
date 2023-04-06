@@ -2,6 +2,7 @@ function requireAll()
     require("src/startup/resources")
     require("src/startup/colliders")
     createCollisionClasses()
+    require("src/startup/data")
 
     require("src/utils")
     require("src/player")
@@ -11,5 +12,6 @@ function requireAll()
     require("src/gates")
     require("src/buttons")
     require("src/maps")
+    require("libraries/show")
 end
 

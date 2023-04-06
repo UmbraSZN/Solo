@@ -19,15 +19,9 @@ player.animations.right = anim8.newAnimation(g("1-4", 4), 0.15)
 
 player.anim = player.animations.down
 
-player.playerstats = {
-    points = 0, --invest into a stat
-    exp = 0, --current experience
-    lvl = 1, --current level
-    strength = 0, --scales damage
-    vitality = 0, --scales max health
-    agility = 0, --scales speed
-}
+loadData() --sets playerstats
 player.health = 100 + (player.playerstats.vitality * 5)
+
 
 function player:update(dt)
     player.damage = 5 + (player.playerstats.strength * 2)

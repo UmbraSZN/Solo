@@ -31,3 +31,6 @@ function love.keypressed(key)
     end
 end
 
+function love.quit()
+    saveData(player.playerstats)
+end

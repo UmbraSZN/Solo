@@ -10,7 +10,6 @@ function buttons:menu(menuType)
     local wh = love.graphics.getHeight()
 
     local buttonGapY = wh * 70/1080
-    local buttonGapX = nil --to add
     local text
     local func
     local bw = ww * 1/4
@@ -23,7 +22,7 @@ function buttons:menu(menuType)
         --3 rows, 1 column
         text = "Play"
         func = function()
-            --gamestate.switch(game)
+            --print(loadData(player.playerstats)) -----------------
             gamestate.push(game, "Overworld Map")
         end
         buttons:new(text, bx, by, bw, bh, func)
@@ -31,7 +30,6 @@ function buttons:menu(menuType)
         text = "Settings"
         func = function()
             print("Settings")
-            --gamestate.switch(settings)
             gamestate.push(settings)
         end
         buttons:new(text, bx, by + bh + buttonGapY, bw, bh, func)
