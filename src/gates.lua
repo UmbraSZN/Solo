@@ -47,11 +47,11 @@ function gates:spawn(x, y, level)
         end
 
         if self:enter("Player") then
-            --teleport player to dungeon
+            --teleport player
             if map == "Dungeon" then
-                gamestate.pop()
+                gamestate.switch(game, "Overworld Map")
             else
-                gamestate.push(game, "Dungeon")
+                gamestate.switch(game, "Dungeon")
             end
         end
     end

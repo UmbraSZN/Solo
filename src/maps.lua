@@ -8,6 +8,9 @@ function loadMap(mapName)
         effects:spawn(200, 250, "gate", 0, 0.1)
         gates:spawn(500, 5500)
         addEnemies()
+    
+    elseif mapName == "Overworld Map" then
+        player:setPosition(200, 150)
     end
 end
 

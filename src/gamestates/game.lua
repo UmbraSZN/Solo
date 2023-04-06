@@ -10,9 +10,7 @@ end
 function game:resize(w, h)
 end
 
-function game:resume()
-    loadMap("Overworld Map")
-    player:setPosition(200, 150)
+function game:resume(from)
 end
 
 function game:update(dt)
@@ -27,17 +25,12 @@ end
 function game:draw()
     
         if map == "Dungeon" then
-            local effect = moonshine(moonshine.effects.vignette)
-            effect.vignette.opacity = 1
-            effect.vignette.softness = 0.6
-            effect.vignette.radius = 0.9
-            effect(function()
+            shaders.darkness(function()
                 drawGame()
             end)
         else
             drawGame()
         end
-        
         player:drawBars()
 
         if player.playerstats.points > 0 then
@@ -54,6 +47,7 @@ function game:keypressed(key)
 
     if key == "o" then --debugging
         local testEnemy = enemies:spawn(120, 240, "ranged")
+        player.playerstats.agility = 500 --REMOVE
 
     elseif key == "l" then --debugging
         local testEnemy = enemies:spawn(200, 240, "melee")

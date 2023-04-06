@@ -1,7 +1,6 @@
 local pause = {}
 
-function pause:enter(from)
-    self.from = from
+function pause:enter()
     buttons:destroyAll()
     buttons:menu("paused")
 end
@@ -24,9 +23,8 @@ function pause:update(dt)
 end
 
 function pause:draw()
-    local effect = moonshine(moonshine.effects.gaussianblur)
-    effect(function()
-        self.from:draw()
+    shaders.blur(function()
+        game:draw()
     end)
     buttons:draw()
 
