@@ -35,6 +35,12 @@ function game:draw()
 
         if player.playerstats.points > 0 then
             player:drawInvestmentScreen()
+        else
+            for i = #buttons, 1, -1 do
+                if buttons[i].text == "+" then
+                    table.remove(buttons, i)
+                end
+            end
         end
     
     love.graphics.print("Level: ".. player.playerstats.lvl, 10, 10)
