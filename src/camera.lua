@@ -14,6 +14,7 @@ function cam:update(dt)
     local correctedY = floorY + floorDecimalY
     
     cam:lookAt(correctedX, correctedY)
+
     
 end
 

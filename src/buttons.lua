@@ -22,7 +22,6 @@ function buttons:menu(menuType)
         --3 rows, 1 column
         text = "Play"
         func = function()
-            --print(loadData(player.playerstats)) -----------------
             gamestate.push(game, "Overworld Map")
         end
         buttons:new(text, bx, by, bw, bh, func)
@@ -52,6 +51,11 @@ function buttons:menu(menuType)
             print("Fullscreen")
             local fs = love.window.getFullscreen()
             love.window.setFullscreen(not fs)
+            shaders.blur = moonshine(moonshine.effects.gaussianblur)
+            shaders.darkness = moonshine(moonshine.effects.vignette)
+            shaders.darkness.vignette.opacity = 1
+            shaders.darkness.vignette.softness = 0.6
+            shaders.darkness.vignette.radius = 0.9
             
             buttons:destroyAll()
             local state = gamestate.current()
