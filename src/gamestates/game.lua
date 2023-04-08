@@ -51,24 +51,14 @@ end
 
 function game:keypressed(key)
 
-    if key == "o" then --debugging
-        local testEnemy = enemies:spawn(120, 240, "ranged")
-        player.playerstats.agility = 500 --REMOVE
-
-    elseif key == "l" then --debugging
-        local testEnemy = enemies:spawn(200, 240, "melee")
-
     elseif key == "space" and player.state == "default" and player.dashCdTimer == 0 then --dodge/dash
         player:dodge()
 
         
-    elseif key == "p" then --debugging
-        print("X: ", player:getX())
-        print("Y: ", player:getY())
 
     elseif key == "i" then --debugging
         --spawn gate
-        gates:spawn(200, 200, "E")
+        --gates:spawn(200, 200, "E")
 
     elseif key == "escape" then
         gamestate.push(pause)
