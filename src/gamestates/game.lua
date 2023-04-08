@@ -51,10 +51,8 @@ end
 
 function game:keypressed(key)
 
-    elseif key == "space" and player.state == "default" and player.dashCdTimer == 0 then --dodge/dash
+    if key == "space" and player.state == "default" and player.dashCdTimer == 0 then --dodge/dash
         player:dodge()
-
-        
 
     elseif key == "i" then --debugging
         --spawn gate
