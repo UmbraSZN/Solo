@@ -65,13 +65,12 @@ function gates:attemptSpawn(dt)
     if timer == 0 then
         timer = 5
 
-        local rng = love.math.random(1, 5)
-        if rng == 5 then
+        local rng = love.math.random(1, 4)
+        if rng == 4 then
             --spawn a gate
-            for i, obj in ipairs(gameMap.layers["Gates"].objects) do
-                gates:spawn(obj.x, obj.y, "E")
-                break
-            end
+            --20 gates
+            local gateSpawnIndex = love.math.random(1, 20)
+            gates:spawn(gameMap.layers["Gates"].objects[gateSpawnIndex].x, gameMap.layers["Gates"].objects[gateSpawnIndex].y, "E")
         end
     end
 
