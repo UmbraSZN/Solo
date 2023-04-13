@@ -16,12 +16,10 @@ end
 
 function gamestates()
     gamestate = require("libraries/hump/gamestate")
-    loading = require("src/gamestates/loading") --is needed?
     menu = require("src/gamestates/menu")
     game = require("src/gamestates/game")
     settings = require("src/gamestates/settings")
     keybinds = require("src/gamestates/keybinds")
-    slots = require("src/gamestates/slots")
     pause = require("src/gamestates/pause")
     dead = require("src/gamestates/dead")
 

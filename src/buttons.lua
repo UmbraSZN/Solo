@@ -143,9 +143,6 @@ function buttons:menu(menuType)
         end
         buttons:new(text, bx, by + bh * 2 + buttonGapY * 2, bw, bh, func)
 
-    elseif menuType == "slots" then
-
-
     elseif menuType == "keybinds" then
         --keybinds
         

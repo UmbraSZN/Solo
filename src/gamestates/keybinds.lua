@@ -26,6 +26,9 @@ function keybinds:draw()
     love.graphics.setColor(0, 1, 0)
     love.graphics.circle("fill", cx, cy, 1)
     love.graphics.pop()
+
+    --temporary
+    love.graphics.printf("WIP\nPress 'Escape' to leave", 0, love.graphics.getHeight()/2, love.graphics.getWidth(), "center")
 end
 
 function keybinds:mousepressed(x, y, button)
