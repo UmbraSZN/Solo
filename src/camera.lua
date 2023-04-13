@@ -1,7 +1,6 @@
 camera = require("libraries/hump/camera")
 cam = camera(0, 0, 3)
---cam.smoother = camera.smooth.damped(15) --better camera movement (won't work with new cam fix)
---cam:lockPosition(correctedX, correctedY) --better camera movement
+
 
 function cam:update(dt)
     local camX, camY = player:getPosition()
@@ -19,3 +18,5 @@ function cam:update(dt)
 end
 
 
+--cam.smoother = camera.smooth.damped(15) --better camera movement (won't work with new cam fix)
+--cam:lockPosition(correctedX, correctedY) --better camera movement

@@ -1,5 +1,5 @@
 function love.conf(t)
-    t.console = true --debugging
+    --t.console = true --debugging
 
     t.window.title = "Solo"
     t.window.icon = nil --add image
