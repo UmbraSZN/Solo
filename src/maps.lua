@@ -82,7 +82,7 @@ function addEnemies()
             end
 
         end
-        print(enemyTotal)
+        --print(enemyTotal)
     end
 end
 

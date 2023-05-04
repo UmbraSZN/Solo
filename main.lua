@@ -33,6 +33,9 @@ function love.keypressed(key)
         elseif state == settings then
             buttons:menu("settings")
         end
+
+    elseif key == "escape" then
+        print("escape key pressed")
     end
 end
 

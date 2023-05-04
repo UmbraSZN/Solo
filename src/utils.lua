@@ -57,3 +57,16 @@ function drawGame()
 end
 
 
+function ErrorPrompt()
+    print("test")
+    local ww = love.graphics.getWidth()
+    local wh = love.graphics.getHeight()
+    local font = love.graphics.getFont()
+    local text = "This button does nothing\nW A S D to move and SPACE to dash"
+
+    love.graphics.push("all")
+    love.graphics.setColor(1, 0, 0) --red
+    love.graphics.printf(text, 5, wh - font:getHeight(text) * 2 - 10, ww, "left")
+    love.graphics.pop()
+end
+

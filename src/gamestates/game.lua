@@ -1,5 +1,5 @@
 local game = {}
-
+local errorTime = 0
 
 function game:enter(from, mapToLoad)
     buttons:destroyAll()
@@ -20,49 +20,59 @@ function game:update(dt)
     world:update(dt)
     effects:update(dt)
     cam:update(dt)
+
+    if errorTime ~= 0 then
+        errorTime = manageCd(dt, errorTime)
+    end
+
 end
 
 function game:draw()
     
-        if map == "Dungeon" then
-            shaders.darkness(function()
-                drawGame()
-            end)
-        else
+    if map == "Dungeon" then
+        shaders.darkness(function()
             drawGame()
-        end
-        player:drawBars()
+        end)
+    else
+        drawGame()
+    end
+    player:drawBars()
 
-        if player.playerstats.points > 0 then
-            player:drawInvestmentScreen()
-        else
-            for i = #buttons, 1, -1 do
-                if buttons[i].text == "+" then
-                    table.remove(buttons, i)
-                end
+    if player.playerstats.points > 0 then
+        player:drawInvestmentScreen()
+    else
+        for i = #buttons, 1, -1 do
+            if buttons[i].text == "+" then
+                table.remove(buttons, i)
             end
         end
+    end
     
     love.graphics.print("Level: ".. player.playerstats.lvl, 10, 10)
-
+    if errorTime ~= 0 then
+        ErrorPrompt()
+    end
 end
 
 
 
 function game:keypressed(key)
 
-    if key == "space" and player.state == "default" and player.dashCdTimer == 0 then --dodge/dash
-        player:dodge()
-
-    elseif key == "i" then --debugging
-        --spawn gate
-        --gates:spawn(200, 200, "E")
+    if key == "space" then
+        if player.state == "default" and player.dashCdTimer == 0 then --dodge/dash
+            player:dodge()
+        end
 
     elseif key == "escape" then
         gamestate.push(pause)
 
+    elseif key == "w" or key == "a" or key == "s" or key == "d" then
+        --since movement keys are chekced in the update this check prevents the error prompt being output for movement inputs.
+    else 
+        errorTime = 4
     end
 end
+
 
 function game:mousepressed(x, y, button)
     local cx, cy = cam:mousePosition() --position of mouse in relation to the world
